@@ -1,0 +1,8 @@
+# SPA fallback: route all requests to index.html
+/*    /index.html   200
+
+# Example permanent redirect (uncomment to use)
+# /old-path    /new-path    301
+
+# Example temporary redirect
+# /temp        /other        302

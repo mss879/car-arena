@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon-16x16.png
+Allow: /favicon-32x32.png
+Allow: /favicon-48x48.png
+Allow: /apple-touch-icon.png
+Allow: /android-chrome-192x192.png
+Allow: /android-chrome-512x512.png
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /admin/login
+Disallow: /admin/analytics
+
+# Crawlers
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Twitterbot
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemaps
+Sitemap: https://cararenaceylon.com/sitemap.xml
+
+# Disallow private/admin routes
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /admin/analytics
