@@ -275,8 +275,17 @@ const Index = () => {
       tryPlay();
     };
 
-    if (video.readyState >= 2) startPlaybackWindow();
-    else video.addEventListener('canplay', startPlaybackWindow, { once: true });
+    const handleReady = () => {
+      // @ts-ignore
+      if (window.isPreloaderComplete) {
+        startPlaybackWindow();
+      } else {
+        window.addEventListener('preloaderComplete', startPlaybackWindow, { once: true });
+      }
+    };
+
+    if (video.readyState >= 2) handleReady();
+    else video.addEventListener('canplay', handleReady, { once: true });
 
     const onVisibility = () => {
       if (document.visibilityState === 'visible' && showHeroVideo) startPlaybackWindow();
@@ -335,7 +344,7 @@ const Index = () => {
               <video
                 ref={heroVideoRef}
                 className="hero-video-fade absolute inset-0 h-full w-full object-cover animate-fade-in md:scale-100 scale-[0.8]"
-                src="/hero video.mp4"
+                src="/hero-video.mp4"
                 muted
                 playsInline
                 autoPlay
@@ -379,6 +388,7 @@ const Index = () => {
                     className="text-white"
                     textClassName="text-4xl sm:text-5xl md:text-6xl drop-shadow whitespace-pre-line"
                     duration={0.5}
+                    delay={3.5}
                     onComplete={() => setHeroHeadingDone(true)}
                   />
                   </Suspense>

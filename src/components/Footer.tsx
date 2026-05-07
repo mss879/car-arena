@@ -237,12 +237,14 @@ const Footer = () => {
               href="https://www.arcai.agency"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-medium text-white hover:underline align-middle"
-              aria-label="ARC AI website"
+              className="inline-flex items-center gap-2 font-medium text-white hover:opacity-80 transition-opacity align-middle"
+              title="Web Design, Development & AI Solutions by ARC AI"
+              aria-label="Web Development and AI Solutions by ARC AI"
             >
+              <span className="sr-only">Web Design & AI Solutions by ARC AI</span>
               <img
                 src="/arclogo.png"
-                alt="ARC AI logo"
+                alt="ARC AI - Web Design & AI Agency Logo"
                 className="h-14 w-14 md:h-20 md:w-20 object-contain"
                 width={80}
                 height={80}

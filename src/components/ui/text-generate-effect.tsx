@@ -9,6 +9,7 @@ export const TextGenerateEffect = ({
   textClassName,
   filter = true,
   duration = 0.5,
+  delay = 0,
   onComplete,
 }: {
   words: string;
@@ -16,6 +17,7 @@ export const TextGenerateEffect = ({
   textClassName?: string;
   filter?: boolean;
   duration?: number;
+  delay?: number;
   onComplete?: () => void;
 }) => {
   const [scope, animate] = useAnimate();
@@ -31,17 +33,17 @@ export const TextGenerateEffect = ({
       },
       {
         duration: duration ?? 1,
-        delay: stagger(0.2),
+        delay: stagger(0.2, { startDelay: delay }),
       }
     );
 
     // Fire onComplete after the last word finishes based on duration + stagger
     if (onComplete) {
-      const total = Math.max(0, (wordsArray.length - 1) * 0.2) + (duration ?? 1);
+      const total = delay + Math.max(0, (wordsArray.length - 1) * 0.2) + (duration ?? 1);
       const id = window.setTimeout(() => onComplete?.(), total * 1000);
       return () => window.clearTimeout(id);
     }
-  }, [scope, words, filter, duration, onComplete]);
+  }, [scope, words, filter, duration, delay, onComplete]);
 
   const renderWords = () => {
     return (

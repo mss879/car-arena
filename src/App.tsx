@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { lazy, Suspense } from "react";
 const AnalyticsTracker = lazy(() => import("@/components/AnalyticsTracker"));
+import Preloader from "@/components/Preloader";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -34,6 +35,7 @@ const App = () => (
         <Suspense fallback={null}>
           <AnalyticsTracker />
         </Suspense>
+        <Preloader />
         <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
