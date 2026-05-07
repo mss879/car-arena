@@ -300,7 +300,7 @@ const Contact = () => {
           {/* Top long panoramic image only */}
           <div className="relative overflow-hidden rounded-3xl bg-black/40 ring-1 ring-white/5">
             <img
-              src="/top%20long%20image%20.jpg"
+              src="/top%20long%20image%20.webp"
               alt="Showroom panoramic view"
               className="edge-fade-xy h-[32vh] w-full object-cover md:h-[46vh]"
               loading="eager"

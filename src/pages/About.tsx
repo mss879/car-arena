@@ -119,7 +119,7 @@ const About = () => {
           <Reveal className="md:col-span-6" delay={120}>
             <div className="relative overflow-hidden rounded-3xl">
               <img
-                src="/about fixed.png"
+                src="/about fixed.webp"
                 alt="Car Arena Ceylon showroom"
                 className="h-full w-full object-cover"
                 loading="lazy"

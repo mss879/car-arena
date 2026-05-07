@@ -77,7 +77,7 @@ const Index = () => {
             obs.disconnect();
           }
         },
-        { threshold: 0.3 }
+        { threshold: 0.15 }
       );
       obs.observe(el);
       observers.push(obs);
@@ -98,7 +98,7 @@ const Index = () => {
 
     const playSafely = () => {
       const p = video.play();
-      if (p && typeof p.catch === "function") p.catch(() => {});
+      if (p && typeof p.catch === "function") p.catch(() => { });
     };
 
     const pause = () => video.pause();
@@ -155,7 +155,7 @@ const Index = () => {
             obs.disconnect();
           }
         },
-        { threshold: 0.25 }
+        { threshold: 0.15 }
       );
       obs.observe(el);
       observers.push(obs);
@@ -188,13 +188,13 @@ const Index = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           // Slide in and reveal, with an even longer delay for polish
-          el.style.transitionDelay = "600ms";
+          el.style.transitionDelay = "200ms";
           el.style.opacity = "1";
           el.style.transform = "translateX(0)";
           obs.disconnect();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.15 }
     );
 
     obs.observe(el);
@@ -220,13 +220,13 @@ const Index = () => {
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.style.transitionDelay = "600ms";
+          el.style.transitionDelay = "200ms";
           el.style.opacity = "1";
           el.style.transform = "translateX(0)";
           obs.disconnect();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.15 }
     );
 
     obs.observe(el);
@@ -253,7 +253,7 @@ const Index = () => {
         video.removeAttribute('controls');
         video.setAttribute('playsinline', '');
         video.setAttribute('webkit-playsinline', '');
-      } catch {}
+      } catch { }
 
       const p = video.play();
       if (p && typeof p.catch === 'function') {
@@ -268,7 +268,7 @@ const Index = () => {
     const startPlaybackWindow = () => {
       if (timeoutId == null) {
         timeoutId = window.setTimeout(() => {
-          try { video.pause(); } catch {}
+          try { video.pause(); } catch { }
           setShowHeroVideo(false);
         }, 5000);
       }
@@ -303,7 +303,7 @@ const Index = () => {
   }, [showHeroVideo]);
 
   return (
-  <main className="bg-black">
+    <main className="bg-black">
       <SEO
         title="Car Dealer Colombo Sri Lanka | Cars for Sale & Japanese Imports | Car Arena Ceylon"
         description="Car Arena Ceylon – Colombo car dealer for brand new cars, Japanese car import services and certified used cars for sale in Sri Lanka. OEM upgrades, detailing, transparent pricing, nationwide support."
@@ -311,29 +311,29 @@ const Index = () => {
         image="https://cararenaceylon.com/hero%20image.png"
         keywords="cars for sale Sri Lanka, used cars Sri Lanka, car dealers Colombo, Japanese car import Sri Lanka, brand new cars Sri Lanka, car dealership Sri Lanka, OEM upgrades, detailing"
       />
-  <h1 className="sr-only">Car Arena Ceylon - Your Trusted Automobile Partner - Car Dealer Colombo Sri Lanka</h1>
-  {/* Assistive / semantic keyword reinforcement without affecting visible layout */}
-  <div className="sr-only">
-    <h2>Cars for Sale in Sri Lanka – Certified Brand New & Used</h2>
-    <p>
-      Explore quality cars for sale Sri Lanka including brand new cars Sri Lanka selections, inspected used cars Sri Lanka inventory, and specialized Japanese car import Sri Lanka solutions through a trusted car dealer Colombo team.
-    </p>
-    <h2>Japanese Car Import & Brand New Vehicles</h2>
-    <p>
-      Our Japanese car import service manages sourcing, auction inspection, shipping, clearance and delivery. We also handle warranties on select brand new cars Sri Lanka buyers request.
-    </p>
-  </div>
-  <section ref={heroRef} aria-label="Hero" className="relative isolate min-h-[100svh] md:h-screen mb-16 md:mb-24">
+      <h1 className="sr-only">Car Arena Ceylon - Your Trusted Automobile Partner - Car Dealer Colombo Sri Lanka</h1>
+      {/* Assistive / semantic keyword reinforcement without affecting visible layout */}
+      <div className="sr-only">
+        <h2>Cars for Sale in Sri Lanka – Certified Brand New & Used</h2>
+        <p>
+          Explore quality cars for sale Sri Lanka including brand new cars Sri Lanka selections, inspected used cars Sri Lanka inventory, and specialized Japanese car import Sri Lanka solutions through a trusted car dealer Colombo team.
+        </p>
+        <h2>Japanese Car Import & Brand New Vehicles</h2>
+        <p>
+          Our Japanese car import service manages sourcing, auction inspection, shipping, clearance and delivery. We also handle warranties on select brand new cars Sri Lanka buyers request.
+        </p>
+      </div>
+      <section ref={heroRef} aria-label="Hero" className="relative isolate min-h-[100svh] md:h-screen mb-16 md:mb-24">
         {/* Sticky viewport frame so it naturally stops being sticky when the hero ends */}
-    <div className="sticky top-0 min-h-[100svh] md:h-screen">
+        <div className="sticky top-0 min-h-[100svh] md:h-screen">
           {/* Background: static image base + transient video overlay for first ~3s */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 -z-10 overflow-hidden">
             {/* Base hero image (shown after video window or if autoplay blocked) */}
             {!showHeroVideo && (
               <img
-                src="/hero fkkor car.png"
+                src="/hero fkkor car.webp"
                 alt="Premium cars dealership hero image — Car Arena Ceylon"
-                className="hero-img h-full w-full object-cover select-none animate-fade-in"
+                className="hero-img absolute inset-0 h-full w-full object-cover select-none animate-fade-in"
                 loading="eager"
                 decoding="async"
                 fetchPriority="high"
@@ -343,22 +343,20 @@ const Index = () => {
             {showHeroVideo && (
               <video
                 ref={heroVideoRef}
-                className="hero-video-fade absolute inset-0 h-full w-full object-cover animate-fade-in md:scale-100 scale-[0.8]"
+                className="hero-video-fade absolute inset-0 h-full w-full object-cover animate-fade-in"
                 src="/hero-video.mp4"
                 muted
                 playsInline
                 autoPlay
                 preload="metadata"
-                poster="/hero fkkor car.png"
+                poster="/hero fkkor car.webp"
               />
             )}
-            {/* Radial fade for edge darkening and central clarity */}
+
             <div
-              className="pointer-events-none absolute inset-0 transition-opacity duration-700"
+              className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-700 hidden md:block"
               style={{
-                background:
-                  'radial-gradient(72% 82% at 50% 45%, rgba(0,0,0,0) 22%, rgba(0,0,0,0.87) 50%, rgba(0,0,0,0.98) 70%, rgba(0,0,0,1) 86%, rgba(0,0,0,1) 100%)',
-                opacity: 1,
+                boxShadow: "inset 0 0 450px 180px rgba(0,0,0,0.98), inset 0 0 150px 60px rgba(0,0,0,0.9)",
               }}
             />
             {/* Mobile-only top fade overlay for hero video (keeps desktop unchanged) */}
@@ -374,19 +372,33 @@ const Index = () => {
             )}
           </div>
 
+          {/* Cinematic black fade frame — lighter on mobile, heavy on desktop */}
+          {/* Mobile: subtle overall tint + soft edge frame */}
+          <div
+            className="pointer-events-none absolute inset-0 z-[5] md:hidden"
+            style={{
+              background: "rgba(0,0,0,0.38)",
+              boxShadow: "inset 0 0 140px 60px rgba(0,0,0,0.9), inset 0 0 50px 20px rgba(0,0,0,0.7)",
+            }}
+          />
+
           {/* Content overlay with bottom-up reveal (pin to bottom on mobile) */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-32 sm:bottom-10 md:bottom-12 z-10 pb-safe">
-            <div className="mx-auto max-w-7xl px-6 sm:px-8">
+          <div className="pointer-events-none absolute inset-x-0 bottom-40 sm:bottom-20 md:bottom-24 lg:bottom-28 z-10 pb-safe">
+            <div className="w-full px-8 md:px-10 lg:px-14">
               <div ref={contentRef} className="max-w-xl md:max-w-2xl lg:max-w-3xl">
-               
+
 
                 {/* Heading with word-by-word animation */}
                 <div className="mt-5">
                   <Suspense fallback={<span className="block h-10" aria-hidden></span>}>
                   <TextGenerateEffect
-                    words={"Car Arena Ceylon -\nYour Trusted Automobile Partner"}
-                    className="text-white"
-                    textClassName="text-4xl sm:text-5xl md:text-6xl drop-shadow whitespace-pre-line"
+                    lines={[
+                      { 
+                        text: "Your Trusted Automobile Partner", 
+                        className: "text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight drop-shadow-2xl" 
+                      }
+                    ]}
+                    className="mb-6"
                     duration={0.5}
                     delay={3.5}
                     onComplete={() => setHeroHeadingDone(true)}
@@ -406,19 +418,19 @@ const Index = () => {
                 </p>
               </div>
             </div>
-      </div>
+          </div>
 
-      {/* Bottom fade to black for a smoother transition into next section */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 md:h-28 -z-[5] bg-gradient-to-b from-transparent to-black" />
+          {/* Bottom fade to black for a smoother transition into next section */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 md:h-28 -z-[5] bg-gradient-to-b from-transparent to-black" />
         </div>
       </section>
-      
-      
 
-      
 
-    {/* Technology / Collection section: mobile shows image then text; desktop keeps background overlay with right-aligned text */}
-  <section aria-label="Technology" className="relative bg-black overflow-hidden pt-12 sm:pt-16 md:pt-64" style={{ contentVisibility: "auto" }}>
+
+
+
+      {/* Technology / Collection section: mobile shows image then text; desktop keeps background overlay with right-aligned text */}
+      <section aria-label="Technology" className="relative bg-black overflow-hidden pt-12 sm:pt-16 md:pt-64" style={{ contentVisibility: "auto" }}>
         {/* Background image container adjusted to reduce zoom (use object-contain) */}
         <div className="hidden md:flex absolute inset-0 z-0 items-center justify-center overflow-hidden">
           <img
@@ -427,7 +439,7 @@ const Index = () => {
             width={2880}
             height={1614}
             sizes="100vw"
-            src="/collection%20image.jpg"
+            src="/collection%20image.webp"
             alt="Car Arena Ceylon collection background"
             className="section-img-collection max-h-[75vh] pl-36 md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
           />
@@ -464,20 +476,20 @@ const Index = () => {
         </div>
 
         {/* Mobile-first inline image (shown only below md) */}
-    <div className="md:hidden px-6 sm:px-8">
+        <div className="md:hidden px-6 sm:px-8">
           <img
             decoding="async"
             loading="lazy"
             width={2880}
             height={1614}
             sizes="100vw"
-            src="/collection%20image.jpg"
+            src="/collection%20image.webp"
             alt="Car Arena Ceylon collection"
             className="w-full h-auto max-h-[50vh] object-cover rounded-xl edge-fade-xy"
           />
         </div>
 
-  {/* Content container: stack on mobile, vertical-center on desktop */}
+        {/* Content container: stack on mobile, vertical-center on desktop */}
         <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 md:min-h-[70vh] md:flex md:items-center">
           <div className="w-full grid grid-cols-1 md:grid-cols-12 mt-6 md:mt-0">
             <div
@@ -491,7 +503,7 @@ const Index = () => {
               </div>
 
               <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-tight">
-                Explore our collection of 
+                Explore our collection of
                 <br className="hidden sm:block" /> premium vehicles
               </h2>
 
@@ -525,9 +537,9 @@ const Index = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Features section – dark theme, placed after Collection */}
-  <section aria-label="Features" className="relative bg-black overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28" style={{ contentVisibility: "auto" }}>
+      <section aria-label="Features" className="relative bg-black overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28" style={{ contentVisibility: "auto" }}>
         {/* Background image with heavy vignette for legibility */}
         <div className="absolute inset-0 -z-10">
           <img
@@ -605,15 +617,15 @@ const Index = () => {
                 playsInline
                 autoPlay
                 preload="metadata"
-                poster="/fallback image.png"
+                poster="/fallback image.webp"
                 className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Vignette-only overlay: keep center crisp, darken perimeter subtly */}
-  <div
+              <div
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-        "radial-gradient(ellipse at center, rgba(0,0,0,0) 42%, rgba(0,0,0,0.92) 84%, rgba(0,0,0,0.99) 98%, rgba(0,0,0,1) 100%)",
+                    "radial-gradient(ellipse at center, rgba(0,0,0,0) 42%, rgba(0,0,0,0.92) 84%, rgba(0,0,0,0.99) 98%, rgba(0,0,0,1) 100%)",
                 }}
               />
             </div>
@@ -629,7 +641,7 @@ const Index = () => {
               {/* Steering icon */}
               <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white" aria-hidden>
-                  <path d="M12 3a9 9 0 1 0 9 9 9.01 9.01 0 0 0-9-9Zm0 2a7 7 0 0 1 6.92 6H5.08A7 7 0 0 1 12 5Zm0 14a7 7 0 0 1-6.27-4h4.05a2 2 0 0 1 1.41.59l.94.94a1 1 0 0 0 1.41 0l.94-.94a2 2 0 0 1 1.41-.59h4.05A7 7 0 0 1 12 19Z" fill="currentColor"/>
+                  <path d="M12 3a9 9 0 1 0 9 9 9.01 9.01 0 0 0-9-9Zm0 2a7 7 0 0 1 6.92 6H5.08A7 7 0 0 1 12 5Zm0 14a7 7 0 0 1-6.27-4h4.05a2 2 0 0 1 1.41.59l.94.94a1 1 0 0 0 1.41 0l.94-.94a2 2 0 0 1 1.41-.59h4.05A7 7 0 0 1 12 19Z" fill="currentColor" />
                 </svg>
               </span>
               <div>
@@ -644,7 +656,7 @@ const Index = () => {
               {/* Lightning icon */}
               <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white" aria-hidden>
-                  <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="currentColor"/>
+                  <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="currentColor" />
                 </svg>
               </span>
               <div>
@@ -659,7 +671,7 @@ const Index = () => {
               {/* Shield icon */}
               <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white" aria-hidden>
-                  <path d="M12 3 4 6v6c0 5 3.58 9.74 8 11 4.42-1.26 8-6 8-11V6l-8-3Z" fill="currentColor"/>
+                  <path d="M12 3 4 6v6c0 5 3.58 9.74 8 11 4.42-1.26 8-6 8-11V6l-8-3Z" fill="currentColor" />
                 </svg>
               </span>
               <div>
@@ -674,7 +686,7 @@ const Index = () => {
       </section>
 
       {/* Battery section – "Fast charging and long battery" (after Features) */}
-  <section aria-label="Battery" className="relative bg-black overflow-hidden pt-28 pb-24 md:pt-36 md:pb-32" style={{ contentVisibility: "auto" }}>
+      <section aria-label="Battery" className="relative bg-black overflow-hidden pt-28 pb-24 md:pt-36 md:pb-32" style={{ contentVisibility: "auto" }}>
         {/* Background image with gradients to match reference */}
         <div className="absolute inset-0 z-0">
           <img
@@ -704,12 +716,12 @@ const Index = () => {
 
         {/* Header: dot subtitle, title, paragraph, button (centered) */}
         <div className="relative z-10 mx-auto max-w-4xl px-6 sm:px-8 text-center text-white">
-          
+
           <h2
             ref={batteryHeadingRef}
             className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight"
           >
-             Why Choose Car Arena Ceylon?
+            Why Choose Car Arena Ceylon?
           </h2>
           <p className="mt-10 mb-10 text-base sm:text-lg text-white/70 text-justify">
             Car Arena Ceylon is more than a dealership, we’re your trusted road partner. From Colombo, we handpick vehicles for quality, style, and performance, and make ownership effortless, rewarding, and uniquely yours.
@@ -730,8 +742,8 @@ const Index = () => {
           </div>
         </div>
 
-  {/* Why Us highlights grid */}
-  <div className="relative z-10 mx-auto mt-16 sm:mt-24 md:mt-72 lg:mt-80 max-w-7xl px-6 sm:px-8 text-white">
+        {/* Why Us highlights grid */}
+        <div className="relative z-10 mx-auto mt-16 sm:mt-24 md:mt-72 lg:mt-80 max-w-7xl px-6 sm:px-8 text-white">
           <div
             ref={batteryGridRef}
             className="grid grid-cols-1 gap-x-10 gap-y-28 text-center md:grid-cols-2 lg:grid-cols-6"
@@ -780,7 +792,7 @@ const Index = () => {
       </section>
 
       {/* Motor section – moved to the end of the homepage */}
-  <section aria-label="Motor" className="relative bg-black overflow-hidden pt-28 pb-24 md:pt-36 md:pb-32" style={{ contentVisibility: "auto" }}>
+      <section aria-label="Motor" className="relative bg-black overflow-hidden pt-28 pb-24 md:pt-36 md:pb-32" style={{ contentVisibility: "auto" }}>
         {/* Right-side image */}
         <div className="absolute inset-0 bg-black" aria-hidden="true" />
         <div className="absolute inset-y-0 right-0 w-full md:w-1/2 lg:w-[55%] z-0">
@@ -791,7 +803,7 @@ const Index = () => {
             height={960}
             sizes="(max-width: 768px) 100vw, 55vw"
             srcSet="/Engines-power-Land-Defender-V8-1536x960.jpg 1536w"
-            src="/Engines-power-Land-Defender-V8-1536x960.jpg"
+            src="/Engines-power-Land-Defender-V8-1536x960.webp"
             alt="Defender V8 engine power - custom modifications"
             className="h-full w-full object-cover object-center"
             style={{
@@ -807,7 +819,7 @@ const Index = () => {
         </div>
 
         {/* Content */}
-  <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 min-h-[60vh] md:min-h-[70vh] flex items-start md:items-center pt-16 md:pt-0">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 min-h-[60vh] md:min-h-[70vh] flex items-start md:items-center pt-16 md:pt-0">
           <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-y-12">
             <div
               ref={motorContentRef}
@@ -825,9 +837,9 @@ const Index = () => {
               </h2>
 
               <p className="mt-10 mb-8 max-w-xl text-base sm:text-lg leading-relaxed text-white/70 text-justify">
-                Unleash your vehicle's full potential with our expert custom modification services. From 
-performance enhancements to aesthetic upgrades, our skilled technicians transform your 
-vision into reality. Personalize your ride and make a statement on the road.
+                Unleash your vehicle's full potential with our expert custom modification services. From
+                performance enhancements to aesthetic upgrades, our skilled technicians transform your
+                vision into reality. Personalize your ride and make a statement on the road.
               </p>
 
               <div className="mt-7">
@@ -853,9 +865,9 @@ vision into reality. Personalize your ride and make a statement on the road.
           </div>
         </div>
       </section>
-      
+
       {/* Brand messages ticker – placed after Motor section */}
-  <section aria-label="Brand Messages" className="bg-black py-28 md:py-40" style={{ contentVisibility: "auto" }}>
+      <section aria-label="Brand Messages" className="bg-black py-28 md:py-40" style={{ contentVisibility: "auto" }}>
         <div className="mx-auto max-w-7xl px-6 sm:px-8">
           {/* Heading removed as requested */}
           <div className="ticker ticker-mask">
@@ -897,7 +909,7 @@ vision into reality. Personalize your ride and make a statement on the road.
       </section>
 
       {/* Interior section – final section on the page */}
-  <section aria-label="Interior" className="relative bg-black overflow-hidden pt-28 md:pt-36" style={{ contentVisibility: "auto" }}>
+      <section aria-label="Interior" className="relative bg-black overflow-hidden pt-28 md:pt-36" style={{ contentVisibility: "auto" }}>
         {/* Background image with layered gradients for legibility, matching the reference */}
         <div className="absolute inset-0 z-0">
           <img
@@ -906,7 +918,7 @@ vision into reality. Personalize your ride and make a statement on the road.
             width={5760}
             height={3176}
             sizes="100vw"
-            src="/imgmain.jpg"
+            src="/imgmain.webp"
             alt="Maintenance and consultation - Car Arena Ceylon"
             className="interior-img h-full w-full object-cover"
           />
@@ -926,42 +938,42 @@ vision into reality. Personalize your ride and make a statement on the road.
         <div className="relative z-10 mx-auto max-w-4xl px-6 sm:px-8 text-center text-white pt-20 sm:pt-24 md:pt-32 lg:pt-40">
           {/* Glass panel to ensure text legibility over the image */}
           <div className="mx-auto max-w-2xl rounded-3xl bg-white/5 backdrop-blur-md ring-1 ring-white/15 p-5 sm:p-6 md:p-8 lg:p-10 shadow-lg shadow-black/30">
-          
 
-          <h2
-            ref={maintenanceHeadingRef}
-            className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight"
-            style={{ opacity: 0, transform: "translateX(-56px)" }}
-          >
-             Uncompromised Care  Maintenance & Consultation
-          </h2>
 
-          <p
-            ref={maintenanceDescRef}
-            className="mt-10 text-base sm:text-lg text-white/70 text-justify"
-            style={{ opacity: 0, transform: "translateY(56px)" }}
-          >
-            Keep your vehicle in peak condition with Car Arena Ceylon's comprehensive maintenance 
-services.Our qualified maintenance and detailing partners with state of the art service facilities provide everything from 
-routine servicing to complex repairs. Trust us for expert advice and reliable care that 
-extends the life and performance of your car.
-          </p>
-
-          {/* CTA + price note */}
-          <div className="mt-8 flex items-center justify-center gap-6">
-            <Link
-              to="/testimonials"
-              className="group inline-flex items-center rounded-full bg-white pl-4 pr-2 py-3 text-sm font-medium text-gray-900 shadow-lg shadow-black/20 ring-1 ring-white/70 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            <h2
+              ref={maintenanceHeadingRef}
+              className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight"
+              style={{ opacity: 0, transform: "translateX(-56px)" }}
             >
-              <span>Testimonials</span>
-              <span className="ml-3 grid size-8 place-items-center rounded-full bg-gray-900/10 transition-transform group-hover:translate-x-0.5">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-                  <path d="M12.97 4.47a.75.75 0 0 1 1.06 0l6 6a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 1 1-1.06-1.06l4.72-4.72H4.75a.75.75 0 0 1 0-1.5h12.94l-4.72-4.72a.75.75 0 0 1 0-1.06Z" />
-                </svg>
-              </span>
-            </Link>
-            
-          </div>
+              Uncompromised Care  Maintenance & Consultation
+            </h2>
+
+            <p
+              ref={maintenanceDescRef}
+              className="mt-10 text-base sm:text-lg text-white/70 text-justify"
+              style={{ opacity: 0, transform: "translateY(56px)" }}
+            >
+              Keep your vehicle in peak condition with Car Arena Ceylon's comprehensive maintenance
+              services.Our qualified maintenance and detailing partners with state of the art service facilities provide everything from
+              routine servicing to complex repairs. Trust us for expert advice and reliable care that
+              extends the life and performance of your car.
+            </p>
+
+            {/* CTA + price note */}
+            <div className="mt-8 flex items-center justify-center gap-6">
+              <Link
+                to="/testimonials"
+                className="group inline-flex items-center rounded-full bg-white pl-4 pr-2 py-3 text-sm font-medium text-gray-900 shadow-lg shadow-black/20 ring-1 ring-white/70 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+              >
+                <span>Testimonials</span>
+                <span className="ml-3 grid size-8 place-items-center rounded-full bg-gray-900/10 transition-transform group-hover:translate-x-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+                    <path d="M12.97 4.47a.75.75 0 0 1 1.06 0l6 6a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 1 1-1.06-1.06l4.72-4.72H4.75a.75.75 0 0 1 0-1.5h12.94l-4.72-4.72a.75.75 0 0 1 0-1.06Z" />
+                  </svg>
+                </span>
+              </Link>
+
+            </div>
           </div>
         </div>
 

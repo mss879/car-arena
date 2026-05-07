@@ -212,13 +212,11 @@ All colors MUST be HSL.
 .hero-img {
   object-position: 60% 30%;
   transform-origin: 60% 30%;
-  transform: scale(0.88);
 }
 @media (min-width: 768px) {
   .hero-img {
   object-position: 0% 40%;
   transform-origin: 0% center;
-    transform: scale(0.85);
     /* Desktop-only top fade to hide visible top edges of the image */
     -webkit-mask-image: linear-gradient(
       to bottom,

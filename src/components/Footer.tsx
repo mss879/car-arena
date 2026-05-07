@@ -54,7 +54,7 @@ const Footer = () => {
           <div>
             <Link to="/" aria-label="Home" className="inline-flex items-center gap-3 min-w-0">
               <img
-                src="/car arena logo.png"
+                src="/car arena logo.webp"
                 alt="Car Arena Ceylon logo"
                 className="h-12 w-12 object-contain shrink-0"
                 width={48}
@@ -243,7 +243,7 @@ const Footer = () => {
             >
               <span className="sr-only">Web Design & AI Solutions by ARC AI</span>
               <img
-                src="/arclogo.png"
+                src="/arclogo.webp"
                 alt="ARC AI - Web Design & AI Agency Logo"
                 className="h-14 w-14 md:h-20 md:w-20 object-contain"
                 width={80}
