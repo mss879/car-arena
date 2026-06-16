@@ -32,6 +32,12 @@ type VehicleRow = {
 
 const BUCKET = "vehicles";
 
+const STATUS_ORDER: Record<string, number> = {
+  "Available": 1,
+  "Reserved": 2,
+  "Sold": 3,
+};
+
 export default function VehicleListings() {
   const [vehicles, setVehicles] = useState<VehicleRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +75,7 @@ export default function VehicleListings() {
 
   // Filtered vehicles
   const filteredVehicles = useMemo(() => {
-    return vehicles.filter((car) => {
+    const filtered = vehicles.filter((car) => {
       const matchesSearch = 
         car.make.toLowerCase().includes(search.toLowerCase()) ||
         car.model.toLowerCase().includes(search.toLowerCase());
@@ -79,6 +85,13 @@ export default function VehicleListings() {
         car.condition === selectedCondition;
 
       return matchesSearch && matchesCondition;
+    });
+
+    // Sort: Available first, then Reserved, then Sold / others
+    return [...filtered].sort((a, b) => {
+      const orderA = STATUS_ORDER[a.status] || 4;
+      const orderB = STATUS_ORDER[b.status] || 4;
+      return orderA - orderB;
     });
   }, [vehicles, search, selectedCondition]);
 
@@ -94,22 +107,22 @@ export default function VehicleListings() {
   const getConditionColor = (cond: string) => {
     switch (cond) {
       case "Brand New":
-        return "bg-[#C2A661]/25 text-[#E6D090] border-[#C2A661]/40";
+        return "bg-[#C2A661] text-black border-[#C2A661] font-bold shadow-md";
       case "Reconditioned":
-        return "bg-amber-500/20 text-amber-300 border-amber-500/30";
+        return "bg-amber-500 text-black border-amber-500 font-bold shadow-md";
       default:
-        return "bg-zinc-800 text-zinc-300 border-zinc-700";
+        return "bg-zinc-800 text-white border-zinc-700 font-bold shadow-md";
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Available":
-        return "bg-emerald-500/25 text-emerald-400 border-emerald-500/40";
+        return "bg-emerald-500 text-black border-emerald-500 font-bold shadow-md";
       case "Reserved":
-        return "bg-orange-500/25 text-orange-400 border-orange-500/40";
+        return "bg-orange-500 text-black border-orange-500 font-bold shadow-md";
       default:
-        return "bg-rose-500/25 text-rose-400 border-rose-500/40";
+        return "bg-rose-500 text-white border-rose-500 font-bold shadow-md";
     }
   };
 
@@ -186,52 +199,53 @@ export default function VehicleListings() {
             {filteredVehicles.map((car) => {
               const mainImage = car.images && car.images.length > 0 ? getPublicUrl(car.images[0]) : "/placeholder.svg";
               return (
-                <Card key={car.id} className="overflow-hidden bg-zinc-950/50 border-white/10 hover:border-[#C2A661]/50 transition-all duration-300 group hover:shadow-[0_10px_30px_-10px_rgba(194,166,97,0.15)] flex flex-col h-full">
+                <Card key={car.id} className="overflow-hidden bg-zinc-950/40 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/50 transition-all duration-300 group hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-15px_rgba(194,166,97,0.25)] flex flex-col h-full rounded-2xl">
                   {/* Image container */}
                   <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
                     <img
                       src={mainImage}
                       alt={`${car.year} ${car.make} ${car.model}`}
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
-                    {/* Badges */}
-                    <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-                      <Badge className={`uppercase tracking-wider text-[10px] font-bold border ${getConditionColor(car.condition)}`}>
-                        {car.condition}
-                      </Badge>
-                    </div>
-                    <div className="absolute top-3 right-3 z-10">
-                      <Badge className={`uppercase tracking-wider text-[10px] font-bold border ${getStatusColor(car.status)}`}>
-                        {car.status}
-                      </Badge>
-                    </div>
                   </div>
 
                   {/* Info details */}
                   <CardContent className="p-5 flex-1 flex flex-col justify-between">
                     <div>
-                      <div className="text-zinc-400 text-xs font-semibold">{car.year}</div>
-                      <h3 className="text-xl font-bold text-white mt-1 group-hover:text-[#E6D090] transition-colors line-clamp-1">
+                      {/* Badges & Year Row */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div className="flex gap-1.5">
+                          <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
+                            {car.condition}
+                          </Badge>
+                          <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
+                            {car.status}
+                          </Badge>
+                        </div>
+                        <span className="text-zinc-400 text-xs font-semibold">{car.year}</span>
+                      </div>
+
+                      <h3 className="text-xl font-bold text-white group-hover:text-[#E6D090] transition-colors line-clamp-1">
                         {car.make} {car.model}
                       </h3>
                       
-                      <div className="text-xl font-bold text-[#E6D090] mt-2">
+                      <div className="text-xl font-bold text-[#E6D090] mt-1.5">
                         {formatPrice(car.price)}
                       </div>
 
                       {/* Mini specs list */}
-                      <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/5 text-xs text-zinc-400">
-                        <div className="flex items-center gap-2">
-                          <Gauge className="h-3.5 w-3.5 text-[#C2A661]" />
-                          <span>{car.mileage.toLocaleString()} km</span>
+                      <div className="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-white/5 text-xs text-zinc-400">
+                        <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                          <Gauge className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                          <span className="truncate font-medium">{car.mileage.toLocaleString()} km</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661]" />
-                          <span className="truncate">{car.transmission}</span>
+                        <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                          <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                          <span className="truncate font-medium">{car.transmission}</span>
                         </div>
-                        <div className="flex items-center gap-2 col-span-2">
-                          <Fuel className="h-3.5 w-3.5 text-[#C2A661]" />
-                          <span className="truncate">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
+                        <div className="flex items-center gap-2 col-span-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                          <Fuel className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                          <span className="truncate font-medium">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
                         </div>
                       </div>
                     </div>
@@ -242,9 +256,10 @@ export default function VehicleListings() {
                           setSelectedVehicle(car);
                           setActiveImageIndex(0);
                         }}
-                        className="w-full bg-[#C2A661] text-black font-semibold hover:bg-[#E6D090] transition-colors rounded-xl h-11"
+                        className="w-full bg-[#C2A661] text-black font-bold hover:bg-white hover:text-black transition-all duration-300 rounded-xl h-11 flex items-center justify-center gap-1 group/btn shadow-[0_4px_12px_rgba(194,166,97,0.2)]"
                       >
                         View Details
+                        <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                       </Button>
                     </div>
                   </CardContent>
@@ -270,7 +285,7 @@ export default function VehicleListings() {
                 <span className="h-2 w-px bg-white/20" />
                 <span>{selectedVehicle.condition}</span>
                 <span className="h-2 w-px bg-white/20" />
-                <Badge className={`text-[10px] py-0.5 border ${getStatusColor(selectedVehicle.status)}`}>
+                <Badge variant="outline" className={`text-[10px] py-0.5 border ${getStatusColor(selectedVehicle.status)}`}>
                   {selectedVehicle.status}
                 </Badge>
               </div>

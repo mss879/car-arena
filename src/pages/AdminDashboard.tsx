@@ -641,14 +641,16 @@ const AdminDashboard = () => {
                       <div>
                         <div className="aspect-[16/10] bg-zinc-900 overflow-hidden relative">
                           <img src={mainImage} alt="" className="object-cover w-full h-full" />
-                          <span className="absolute top-2 left-2 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-zinc-950/80 rounded border border-white/15">
-                            {car.condition}
-                          </span>
-                          <span className="absolute top-2 right-2 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-zinc-950/80 rounded border border-white/15 text-[#E6D090]">
-                            {car.status}
-                          </span>
                         </div>
                         <CardContent className="pt-4">
+                          <div className="flex flex-wrap gap-1.5 mb-2">
+                            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-zinc-900 rounded border border-white/10 text-zinc-300">
+                              {car.condition}
+                            </span>
+                            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-zinc-900 rounded border border-white/10 text-[#E6D090]">
+                              {car.status}
+                            </span>
+                          </div>
                           <h3 className="text-lg font-bold truncate">{car.year} {car.make} {car.model}</h3>
                           <p className="text-[#E6D090] font-bold mt-1 text-base">{formatLKR(car.price)}</p>
                           <div className="text-xs text-zinc-400 mt-2 grid grid-cols-2 gap-1 pb-2 border-b border-white/5">
