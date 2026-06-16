@@ -1,12 +1,13 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
-import { Menu, ChevronRight, Home, Info, Wrench, MessageSquareText, Phone as PhoneIcon, Facebook } from "lucide-react";
+import { Menu, ChevronRight, Home, Info, Wrench, MessageSquareText, Phone as PhoneIcon, Facebook, Car } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 
 const navItems = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
   { to: "/services", label: "Services" },
+  { to: "/vehicle-listings", label: "Vehicle Listing" },
   { to: "/testimonials", label: "Testimonials" },
   { to: "/contact", label: "Contact" },
 ];
@@ -22,6 +23,8 @@ const Navbar = () => {
         return <Info className="h-5 w-5" aria-hidden />;
       case "/services":
         return <Wrench className="h-5 w-5" aria-hidden />;
+      case "/vehicle-listings":
+        return <Car className="h-5 w-5" aria-hidden />;
       case "/testimonials":
         return <MessageSquareText className="h-5 w-5" aria-hidden />;
       case "/contact":

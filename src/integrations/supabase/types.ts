@@ -87,6 +87,74 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      },
+      vehicles: {
+        Row: {
+          id: string
+          created_at: string
+          make: string
+          model: string
+          year: number
+          price: number
+          mileage: number
+          transmission: string
+          fuel_type: string
+          engine_capacity: string | null
+          body_type: string | null
+          condition: string
+          description: string
+          images: string[]
+          featured: boolean | null
+          status: string
+          created_by: string | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          make: string
+          model: string
+          year: number
+          price: number
+          mileage: number
+          transmission: string
+          fuel_type: string
+          engine_capacity?: string | null
+          body_type?: string | null
+          condition: string
+          description: string
+          images?: string[]
+          featured?: boolean | null
+          status?: string
+          created_by?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          make?: string
+          model?: string
+          year?: number
+          price?: number
+          mileage?: number
+          transmission?: string
+          fuel_type?: string
+          engine_capacity?: string | null
+          body_type?: string | null
+          condition?: string
+          description?: string
+          images?: string[]
+          featured?: boolean | null
+          status?: string
+          created_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicles_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {

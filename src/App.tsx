@@ -18,6 +18,7 @@ import CarsForSale from "./pages/CarsForSale";
 import UsedCars from "./pages/UsedCars";
 import JapaneseCarImport from "./pages/JapaneseCarImport";
 import BrandNewCars from "./pages/BrandNewCars";
+import VehicleListings from "./pages/VehicleListings";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/used-cars" element={<UsedCars />} />
           <Route path="/japanese-car-import" element={<JapaneseCarImport />} />
           <Route path="/brand-new-cars" element={<BrandNewCars />} />
+          <Route path="/vehicle-listings" element={<VehicleListings />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminDashboard />} />
