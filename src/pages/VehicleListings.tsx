@@ -130,7 +130,7 @@ export default function VehicleListings() {
     <main className="bg-black text-white min-h-screen py-20 md:py-24">
       <SEO
         title="Vehicle Listings | Premium Cars for Sale | Car Arena Ceylon"
-        description="Explore our curated inventory of brand new, reconditioned, and inspected used vehicles. High-definition images, detailed specs, and premium service."
+        description="Explore our curated inventory of brand new and inspected used vehicles. High-definition images, detailed specs, and premium service."
         canonical="https://cararenaceylon.com/vehicle-listings"
         image="https://cararenaceylon.com/hero%20image.png"
         keywords="cars for sale Sri Lanka, premium cars Colombo, Toyota Sri Lanka, Honda Sri Lanka, hybrid cars Colombo"
@@ -149,21 +149,9 @@ export default function VehicleListings() {
       {/* Search and Filters Section */}
       <section className="mx-auto max-w-6xl px-6 md:px-8 mt-12">
         <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl ring-1 ring-white/10 shadow-lg">
-          {/* Search bar */}
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-            <Input
-              type="text"
-              placeholder="Search make or model..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 bg-black/40 border-white/10 text-white placeholder-zinc-500 focus-visible:ring-[#C2A661]/40 focus-visible:border-[#C2A661]"
-            />
-          </div>
-
           {/* Condition Pills */}
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
-            {["All", "Brand New", "Reconditioned", "Used"].map((cond) => (
+            {["All", "Brand New", "Used"].map((cond) => (
               <Button
                 key={cond}
                 variant="ghost"
@@ -178,6 +166,18 @@ export default function VehicleListings() {
                 {cond}
               </Button>
             ))}
+          </div>
+
+          {/* Search bar */}
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+            <Input
+              type="text"
+              placeholder="Search make or model..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9 bg-black/40 border-white/10 text-white placeholder-zinc-500 focus-visible:ring-[#C2A661]/40 focus-visible:border-[#C2A661]"
+            />
           </div>
         </div>
       </section>
@@ -215,9 +215,11 @@ export default function VehicleListings() {
                       {/* Badges & Year Row */}
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <div className="flex gap-1.5">
-                          <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
-                            {car.condition}
-                          </Badge>
+                          {car.condition !== "Reconditioned" && (
+                            <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
+                              {car.condition}
+                            </Badge>
+                          )}
                           <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
                             {car.status}
                           </Badge>
@@ -283,8 +285,12 @@ export default function VehicleListings() {
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#C2A661] uppercase tracking-wider">
                 <span>{selectedVehicle.year}</span>
                 <span className="h-2 w-px bg-white/20" />
-                <span>{selectedVehicle.condition}</span>
-                <span className="h-2 w-px bg-white/20" />
+                {selectedVehicle.condition !== "Reconditioned" && (
+                  <>
+                    <span>{selectedVehicle.condition}</span>
+                    <span className="h-2 w-px bg-white/20" />
+                  </>
+                )}
                 <Badge variant="outline" className={`text-[10px] py-0.5 border ${getStatusColor(selectedVehicle.status)}`}>
                   {selectedVehicle.status}
                 </Badge>
@@ -383,10 +389,12 @@ export default function VehicleListings() {
                       <div className="text-zinc-500 text-xs">Body Type</div>
                       <div className="font-semibold text-white/90">{selectedVehicle.body_type || "N/A"}</div>
                     </div>
-                    <div>
-                      <div className="text-zinc-500 text-xs">Condition</div>
-                      <div className="font-semibold text-[#E6D090]">{selectedVehicle.condition}</div>
-                    </div>
+                    {selectedVehicle.condition !== "Reconditioned" && (
+                      <div>
+                        <div className="text-zinc-500 text-xs">Condition</div>
+                        <div className="font-semibold text-[#E6D090]">{selectedVehicle.condition}</div>
+                      </div>
+                    )}
                   </div>
                 </div>
 

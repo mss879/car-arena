@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { lazy, Suspense } from "react";
 const TextGenerateEffect = lazy(() => import("@/components/ui/text-generate-effect").then(m => ({ default: m.TextGenerateEffect })));
 import { SEO } from "@/lib/seo";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Gauge, SlidersHorizontal, Fuel, ChevronRight } from "lucide-react";
 
 const Index = () => {
   useEffect(() => {
@@ -25,6 +29,80 @@ const Index = () => {
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const [showHeroVideo, setShowHeroVideo] = useState(true);
   const [heroHeadingDone, setHeroHeadingDone] = useState(false);
+
+  const [featuredVehicles, setFeaturedVehicles] = useState<any[]>([]);
+  const [loadingVehicles, setLoadingVehicles] = useState(true);
+
+  useEffect(() => {
+    const fetchFeaturedVehicles = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("vehicles")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        
+        // Sort: Available first, then Reserved, then Sold / others
+        const STATUS_ORDER: Record<string, number> = {
+          "Available": 1,
+          "Reserved": 2,
+          "Sold": 3,
+        };
+        
+        const sorted = [...(data || [])].sort((a: any, b: any) => {
+          const orderA = STATUS_ORDER[a.status] || 4;
+          const orderB = STATUS_ORDER[b.status] || 4;
+          return orderA - orderB;
+        });
+          
+        setFeaturedVehicles(sorted.slice(0, 3));
+      } catch (err) {
+        console.error("Error fetching homepage vehicles:", err);
+      } finally {
+        setLoadingVehicles(false);
+      }
+    };
+    fetchFeaturedVehicles();
+  }, []);
+
+  const getVehicleImageUrl = (images: string[]) => {
+    if (images && images.length > 0) {
+      return supabase.storage.from("vehicles").getPublicUrl(images[0]).data.publicUrl;
+    }
+    return "/placeholder.svg";
+  };
+
+  const getConditionColor = (cond: string) => {
+    switch (cond) {
+      case "Brand New":
+        return "bg-[#C2A661] text-black border-[#C2A661] font-bold shadow-md";
+      case "Reconditioned":
+        return "bg-amber-500 text-black border-amber-500 font-bold shadow-md";
+      default:
+        return "bg-zinc-800 text-white border-zinc-700 font-bold shadow-md";
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Available":
+        return "bg-emerald-500 text-black border-emerald-500 font-bold shadow-md";
+      case "Reserved":
+        return "bg-orange-500 text-black border-orange-500 font-bold shadow-md";
+      default:
+        return "bg-rose-500 text-white border-rose-500 font-bold shadow-md";
+    }
+  };
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-LK", {
+      style: "currency",
+      currency: "LKR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price).replace("LKR", "Rs.");
+  };
 
   // Note: Removed headline parallax; hero section layout remains sticky for visual depth
 
@@ -788,6 +866,123 @@ const Index = () => {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Available Listings Section */}
+      <section aria-label="Available Listings" className="relative bg-black py-28 md:py-36 border-t border-white/5" style={{ contentVisibility: "auto" }}>
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+            <div>
+              <div className="flex items-center gap-2 text-white">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C2A661]" aria-hidden="true" />
+                <span className="text-sm font-semibold tracking-wide text-[#C2A661] uppercase">Showcase</span>
+              </div>
+              <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white font-serif">
+                Available Listings
+              </h2>
+              <p className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-white/70">
+                Explore our select inventory of exceptional vehicles. Each listing is verified, fully inspected, and ready to meet the highest standards of performance and comfort.
+              </p>
+            </div>
+            <div className="mt-6 md:mt-0">
+              <Link
+                to="/vehicle-listings"
+                className="group inline-flex items-center rounded-full bg-white pl-5 pr-2.5 py-3.5 text-sm font-medium text-gray-900 shadow-lg shadow-black/20 ring-1 ring-white/70 hover:bg-zinc-100 transition-all focus:outline-none"
+              >
+                <span>View All Listings</span>
+                <span className="ml-3 grid size-8 place-items-center rounded-full bg-gray-900/10 transition-transform group-hover:translate-x-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+                    <path d="M12.97 4.47a.75.75 0 0 1 1.06 0l6 6a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 1 1-1.06-1.06l4.72-4.72H4.75a.75.75 0 0 1 0-1.5h12.94l-4.72-4.72a.75.75 0 0 1 0-1.06Z" />
+                  </svg>
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Listings Grid */}
+          {loadingVehicles ? (
+            <div className="flex justify-center py-20">
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C2A661]" />
+            </div>
+          ) : featuredVehicles.length === 0 ? (
+            <div className="text-center py-20 bg-zinc-950/40 rounded-2xl ring-1 ring-white/5 p-8">
+              <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredVehicles.map((car) => {
+                const mainImage = getVehicleImageUrl(car.images);
+                return (
+                  <Card key={car.id} className="overflow-hidden bg-zinc-950/40 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/50 transition-all duration-300 group hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-15px_rgba(194,166,97,0.25)] flex flex-col h-full rounded-2xl">
+                    {/* Image container */}
+                    <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900 font-sans">
+                      <img
+                        src={mainImage}
+                        alt={`${car.year} ${car.make} ${car.model}`}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    </div>
+
+                    {/* Info details */}
+                    <CardContent className="p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        {/* Badges & Year Row */}
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                          <div className="flex gap-1.5">
+                            {car.condition !== "Reconditioned" && (
+                              <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
+                                {car.condition}
+                              </Badge>
+                            )}
+                            <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
+                                {car.status}
+                            </Badge>
+                          </div>
+                          <span className="text-zinc-400 text-xs font-semibold">{car.year}</span>
+                        </div>
+
+                        <h3 className="text-xl font-bold text-white group-hover:text-[#E6D090] transition-colors line-clamp-1">
+                          {car.make} {car.model}
+                        </h3>
+                        
+                        <div className="text-xl font-bold text-[#E6D090] mt-1.5">
+                          {formatPrice(car.price)}
+                        </div>
+
+                        {/* Mini specs list */}
+                        <div className="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-white/5 text-xs text-zinc-400">
+                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                            <Gauge className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                            <span className="truncate font-medium">{car.mileage.toLocaleString()} km</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                            <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                            <span className="truncate font-medium">{car.transmission}</span>
+                          </div>
+                          <div className="flex items-center gap-2 col-span-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                            <Fuel className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                            <span className="truncate font-medium">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-6">
+                        <Link
+                          to="/vehicle-listings"
+                          className="w-full bg-[#C2A661] text-black font-bold hover:bg-white hover:text-black transition-all duration-300 rounded-xl h-11 flex items-center justify-center gap-1 group/btn shadow-[0_4px_12px_rgba(194,166,97,0.2)] text-sm"
+                        >
+                          View Details
+                          <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
