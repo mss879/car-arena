@@ -6,7 +6,8 @@ import { SEO } from "@/lib/seo";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Gauge, SlidersHorizontal, Fuel, ChevronRight, ShieldCheck } from "lucide-react";
+import { Gauge, SlidersHorizontal, Fuel, ChevronRight, ShieldCheck, ChevronLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Index = () => {
   useEffect(() => {
@@ -32,6 +33,60 @@ const Index = () => {
 
   const [featuredVehicles, setFeaturedVehicles] = useState<any[]>([]);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slideDirection, setSlideDirection] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleNext = () => {
+    if (featuredVehicles.length === 0) return;
+    setSlideDirection(1);
+    setCurrentSlide((prev) => (prev + 1) % featuredVehicles.length);
+  };
+
+  const handlePrev = () => {
+    if (featuredVehicles.length === 0) return;
+    setSlideDirection(-1);
+    setCurrentSlide((prev) => (prev - 1 + featuredVehicles.length) % featuredVehicles.length);
+  };
+
+  useEffect(() => {
+    if (loadingVehicles || featuredVehicles.length <= 1 || isHovered) return;
+
+    const timer = setInterval(() => {
+      setSlideDirection(1);
+      setCurrentSlide((prev) => (prev + 1) % featuredVehicles.length);
+    }, 8000);
+
+    return () => clearInterval(timer);
+  }, [loadingVehicles, featuredVehicles, isHovered]);
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 100 : -100,
+      opacity: 0,
+      scale: 0.98
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.25 },
+        scale: { duration: 0.25 }
+      }
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? 100 : -100,
+      opacity: 0,
+      scale: 0.98,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.25 },
+        scale: { duration: 0.25 }
+      }
+    })
+  };
 
   useEffect(() => {
     const fetchFeaturedVehicles = async () => {
@@ -56,7 +111,7 @@ const Index = () => {
           return orderA - orderB;
         });
 
-        setFeaturedVehicles(sorted.slice(0, 3));
+        setFeaturedVehicles(sorted.slice(0, 10));
       } catch (err) {
         console.error("Error fetching homepage vehicles:", err);
       } finally {
@@ -901,7 +956,7 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Listings Grid */}
+          {/* Listings Carousel */}
           {loadingVehicles ? (
             <div className="flex justify-center py-20">
               <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C2A661]" />
@@ -911,80 +966,160 @@ const Index = () => {
               <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredVehicles.map((car) => {
-                const mainImage = getVehicleImageUrl(car.images);
-                return (
-                  <Card key={car.id} className="overflow-hidden bg-zinc-950/40 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/50 transition-all duration-300 group hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-15px_rgba(194,166,97,0.25)] flex flex-col h-full rounded-2xl">
-                    {/* Image container */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900 font-sans">
-                      <img
-                        src={mainImage}
-                        alt={`${car.year} ${car.make} ${car.model}`}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
-                      />
-                    </div>
-
-                    {/* Info details */}
-                    <CardContent className="p-5 flex-1 flex flex-col justify-between">
-                      <div>
-                        {/* Badges & Year Row */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                          <div className="flex gap-1.5">
+            <div className="relative w-full max-w-6xl mx-auto px-4 md:px-12">
+              {/* Carousel container */}
+              <div
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="relative overflow-hidden rounded-3xl bg-zinc-950/40 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.15)] transition-all duration-500 w-full lg:h-[500px] flex flex-col"
+              >
+                <AnimatePresence initial={false} custom={slideDirection} mode="wait">
+                  {(() => {
+                    const car = featuredVehicles[currentSlide];
+                    if (!car) return null;
+                    const mainImage = getVehicleImageUrl(car.images);
+                    return (
+                      <motion.div
+                        key={currentSlide}
+                        custom={slideDirection}
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        className="w-full flex flex-col lg:grid lg:grid-cols-12 flex-1 h-auto lg:h-full"
+                      >
+                        {/* Image Column */}
+                        <div className="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto h-auto lg:h-full bg-zinc-900 overflow-hidden group/img">
+                          <img
+                            src={mainImage}
+                            alt={`${car.year} ${car.make} ${car.model}`}
+                            className="absolute inset-0 object-cover w-full h-full scale-100 group-hover/img:scale-105 transition-transform duration-700 ease-out"
+                          />
+                          {/* Dark overlays */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent lg:hidden pointer-events-none" />
+                          <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-zinc-950 hidden lg:block pointer-events-none" />
+                          
+                          {/* Badges on image */}
+                          <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
                             {car.condition !== "Reconditioned" && (
-                              <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
+                              <Badge variant="outline" className={`uppercase tracking-wider text-[10px] px-2.5 py-1 font-bold border ${getConditionColor(car.condition)}`}>
                                 {car.condition}
                               </Badge>
                             )}
-                            <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
+                            <Badge variant="outline" className={`uppercase tracking-wider text-[10px] px-2.5 py-1 font-bold border ${getStatusColor(car.status)}`}>
                               {car.status}
                             </Badge>
                           </div>
-                          <span className="text-zinc-400 text-xs font-semibold">{car.year}</span>
                         </div>
 
-                        <h3 className="text-xl font-bold text-white group-hover:text-[#E6D090] transition-colors line-clamp-1">
-                          {car.make} {car.model}
-                        </h3>
+                        {/* Details Column */}
+                        <div className="lg:col-span-5 p-6 lg:p-8 flex flex-col justify-between bg-zinc-950/20 z-10 h-auto lg:h-full">
+                          <div>
+                            <span className="text-zinc-400 text-xs font-semibold tracking-wider uppercase">{car.year} Model</span>
+                            <h3 className="text-2xl lg:text-3xl font-extrabold text-white mt-1 leading-tight tracking-tight font-sans">
+                              {car.make} <span className="text-[#E6D090]">{car.model}</span>
+                            </h3>
+                            <div className="text-2xl lg:text-3xl font-black bg-gradient-to-r from-[#E6D090] via-white to-[#C2A661] bg-clip-text text-transparent mt-2 font-sans">
+                              {formatPrice(car.price)}
+                            </div>
 
-                        <div className="text-xl font-bold text-[#E6D090] mt-1.5">
-                          {formatPrice(car.price)}
+                            {/* Mini Specs */}
+                            <div className="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-white/10 text-xs text-zinc-400 font-sans">
+                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
+                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
+                                  <Gauge className="h-4 w-4 text-[#C2A661] shrink-0" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Mileage</div>
+                                  <div className="text-zinc-200 font-bold text-sm mt-0.5 truncate">{car.mileage.toLocaleString()} km</div>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
+                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
+                                  <SlidersHorizontal className="h-4 w-4 text-[#C2A661] shrink-0" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Transmission</div>
+                                  <div className="text-zinc-200 font-bold text-sm mt-0.5 truncate">{car.transmission}</div>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
+                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
+                                  <Fuel className="h-4 w-4 text-[#C2A661] shrink-0" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Fuel & Engine</div>
+                                  <div className="text-zinc-200 font-bold text-xs mt-0.5 truncate" title={`${car.fuel_type} ${car.engine_capacity ? `(${car.engine_capacity})` : ""}`}>
+                                    {car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
+                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
+                                  <ShieldCheck className="h-4 w-4 text-[#C2A661] shrink-0" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Condition</div>
+                                  <div className="text-zinc-200 font-bold text-sm mt-0.5 truncate">{car.condition}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mt-6 lg:mt-8">
+                            <Link
+                              to={`/vehicle-listings?id=${car.id}`}
+                              className="w-full bg-gradient-to-r from-[#C2A661] to-[#E6D090] text-black font-extrabold hover:brightness-110 active:scale-[0.98] transition-all duration-300 rounded-xl h-12 flex items-center justify-center gap-1.5 shadow-[0_4px_20px_rgba(194,166,97,0.3)] text-sm group/btn"
+                            >
+                              View Details
+                              <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                            </Link>
+                          </div>
                         </div>
+                      </motion.div>
+                    );
+                  })()}
+                </AnimatePresence>
+              </div>
 
-                        {/* Mini specs list */}
-                        <div className="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-white/5 text-xs text-zinc-400">
-                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
-                            <Gauge className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                            <span className="truncate font-medium">{car.mileage.toLocaleString()} km</span>
-                          </div>
-                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
-                            <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                            <span className="truncate font-medium">{car.transmission}</span>
-                          </div>
-                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
-                            <Fuel className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                            <span className="truncate font-medium">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
-                          </div>
-                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
-                            <ShieldCheck className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                            <span className="truncate font-medium">{car.condition}</span>
-                          </div>
-                        </div>
-                      </div>
+              {/* Side Navigation Arrows */}
+              <button
+                onClick={handlePrev}
+                aria-label="Previous listing"
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 lg:-translate-x-2/3 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-12 h-12 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-95 group focus:outline-none"
+              >
+                <ChevronLeft className="h-6 w-6 transition-transform duration-300 group-hover:-translate-x-0.5" />
+              </button>
 
-                      <div className="mt-6">
-                        <Link
-                          to="/vehicle-listings"
-                          className="w-full bg-[#C2A661] text-black font-bold hover:bg-white hover:text-black transition-all duration-300 rounded-xl h-11 flex items-center justify-center gap-1 group/btn shadow-[0_4px_12px_rgba(194,166,97,0.2)] text-sm"
-                        >
-                          View Details
-                          <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                        </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              <button
+                onClick={handleNext}
+                aria-label="Next listing"
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 lg:translate-x-2/3 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-12 h-12 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-95 group focus:outline-none"
+              >
+                <ChevronRight className="h-6 w-6 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </button>
+
+              {/* Pagination Dots */}
+              <div className="flex justify-center items-center gap-2 mt-8 z-20 relative">
+                {featuredVehicles.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setSlideDirection(index > currentSlide ? 1 : -1);
+                      setCurrentSlide(index);
+                    }}
+                    aria-label={`Go to slide ${index + 1}`}
+                    className={`h-2.5 rounded-full transition-all duration-500 focus:outline-none ${
+                      index === currentSlide
+                        ? "w-8 bg-[#C2A661] shadow-[0_0_8px_rgba(194,166,97,0.6)]"
+                        : "w-2.5 bg-white/20 hover:bg-white/40"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -52,6 +52,20 @@ export default function VehicleListings() {
     fetchVehicles();
   }, []);
 
+  useEffect(() => {
+    if (vehicles.length > 0) {
+      const params = new URLSearchParams(window.location.search);
+      const vehicleId = params.get("id");
+      if (vehicleId) {
+        const found = vehicles.find((v) => v.id === vehicleId);
+        if (found) {
+          setSelectedVehicle(found);
+          setActiveImageIndex(0);
+        }
+      }
+    }
+  }, [vehicles]);
+
   const fetchVehicles = async () => {
     setLoading(true);
     try {
