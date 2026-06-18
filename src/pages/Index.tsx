@@ -6,7 +6,7 @@ import { SEO } from "@/lib/seo";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Gauge, SlidersHorizontal, Fuel, ChevronRight } from "lucide-react";
+import { Gauge, SlidersHorizontal, Fuel, ChevronRight, ShieldCheck } from "lucide-react";
 
 const Index = () => {
   useEffect(() => {
@@ -42,20 +42,20 @@ const Index = () => {
           .order("created_at", { ascending: false });
 
         if (error) throw error;
-        
+
         // Sort: Available first, then Reserved, then Sold / others
         const STATUS_ORDER: Record<string, number> = {
           "Available": 1,
           "Reserved": 2,
           "Sold": 3,
         };
-        
+
         const sorted = [...(data || [])].sort((a: any, b: any) => {
           const orderA = STATUS_ORDER[a.status] || 4;
           const orderB = STATUS_ORDER[b.status] || 4;
           return orderA - orderB;
         });
-          
+
         setFeaturedVehicles(sorted.slice(0, 3));
       } catch (err) {
         console.error("Error fetching homepage vehicles:", err);
@@ -469,18 +469,18 @@ const Index = () => {
                 {/* Heading with word-by-word animation */}
                 <div className="mt-5">
                   <Suspense fallback={<span className="block h-10" aria-hidden></span>}>
-                  <TextGenerateEffect
-                    lines={[
-                      { 
-                        text: "Your Trusted Automobile Partner", 
-                        className: "text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight drop-shadow-2xl" 
-                      }
-                    ]}
-                    className="mb-6"
-                    duration={0.5}
-                    delay={3.5}
-                    onComplete={() => setHeroHeadingDone(true)}
-                  />
+                    <TextGenerateEffect
+                      lines={[
+                        {
+                          text: "Your Trusted Automobile Partner",
+                          className: "text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight drop-shadow-2xl"
+                        }
+                      ]}
+                      className="mb-6"
+                      duration={0.5}
+                      delay={3.5}
+                      onComplete={() => setHeroHeadingDone(true)}
+                    />
                   </Suspense>
                 </div>
 
@@ -937,7 +937,7 @@ const Index = () => {
                               </Badge>
                             )}
                             <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
-                                {car.status}
+                              {car.status}
                             </Badge>
                           </div>
                           <span className="text-zinc-400 text-xs font-semibold">{car.year}</span>
@@ -946,7 +946,7 @@ const Index = () => {
                         <h3 className="text-xl font-bold text-white group-hover:text-[#E6D090] transition-colors line-clamp-1">
                           {car.make} {car.model}
                         </h3>
-                        
+
                         <div className="text-xl font-bold text-[#E6D090] mt-1.5">
                           {formatPrice(car.price)}
                         </div>
@@ -961,9 +961,13 @@ const Index = () => {
                             <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
                             <span className="truncate font-medium">{car.transmission}</span>
                           </div>
-                          <div className="flex items-center gap-2 col-span-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
                             <Fuel className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
                             <span className="truncate font-medium">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                            <ShieldCheck className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                            <span className="truncate font-medium">{car.condition}</span>
                           </div>
                         </div>
                       </div>

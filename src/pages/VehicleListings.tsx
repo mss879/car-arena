@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Search, Calendar, Gauge, SlidersHorizontal, Fuel, ShieldAlert, Phone, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Calendar, Gauge, SlidersHorizontal, Fuel, ShieldAlert, Phone, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 
 type VehicleRow = {
@@ -43,7 +43,7 @@ export default function VehicleListings() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCondition, setSelectedCondition] = useState<string>("All");
-  
+
   // Details Modal State
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleRow | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -76,12 +76,12 @@ export default function VehicleListings() {
   // Filtered vehicles
   const filteredVehicles = useMemo(() => {
     const filtered = vehicles.filter((car) => {
-      const matchesSearch = 
+      const matchesSearch =
         car.make.toLowerCase().includes(search.toLowerCase()) ||
         car.model.toLowerCase().includes(search.toLowerCase());
-      
-      const matchesCondition = 
-        selectedCondition === "All" || 
+
+      const matchesCondition =
+        selectedCondition === "All" ||
         car.condition === selectedCondition;
 
       return matchesSearch && matchesCondition;
@@ -157,11 +157,10 @@ export default function VehicleListings() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setSelectedCondition(cond)}
-                className={`rounded-lg text-xs uppercase tracking-wider font-semibold transition-all px-4 py-2 border ${
-                  selectedCondition === cond
+                className={`rounded-lg text-xs uppercase tracking-wider font-semibold transition-all px-4 py-2 border ${selectedCondition === cond
                     ? "bg-[#C2A661] text-black border-[#C2A661]"
                     : "bg-black/30 border-white/10 text-white/70 hover:bg-zinc-800 hover:text-white"
-                }`}
+                  }`}
               >
                 {cond}
               </Button>
@@ -230,7 +229,7 @@ export default function VehicleListings() {
                       <h3 className="text-xl font-bold text-white group-hover:text-[#E6D090] transition-colors line-clamp-1">
                         {car.make} {car.model}
                       </h3>
-                      
+
                       <div className="text-xl font-bold text-[#E6D090] mt-1.5">
                         {formatPrice(car.price)}
                       </div>
@@ -245,9 +244,13 @@ export default function VehicleListings() {
                           <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
                           <span className="truncate font-medium">{car.transmission}</span>
                         </div>
-                        <div className="flex items-center gap-2 col-span-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                        <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
                           <Fuel className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
                           <span className="truncate font-medium">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                          <ShieldCheck className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                          <span className="truncate font-medium">{car.condition}</span>
                         </div>
                       </div>
                     </div>
@@ -305,7 +308,7 @@ export default function VehicleListings() {
 
             {/* Content Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
-              
+
               {/* Left Column: Image Slider */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center">
@@ -349,11 +352,10 @@ export default function VehicleListings() {
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
-                        className={`relative aspect-[16/10] w-16 overflow-hidden rounded border transition-all ${
-                          idx === activeImageIndex
+                        className={`relative aspect-[16/10] w-16 overflow-hidden rounded border transition-all ${idx === activeImageIndex
                             ? "border-[#C2A661] ring-1 ring-[#C2A661]/40"
                             : "border-white/10 opacity-60 hover:opacity-100"
-                        }`}
+                          }`}
                       >
                         <img src={getPublicUrl(img)} alt="" className="object-cover w-full h-full" />
                       </button>
@@ -425,7 +427,7 @@ export default function VehicleListings() {
               <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-4">
                 Vehicle Description
               </h3>
-              <div 
+              <div
                 className="prose prose-invert prose-sm max-w-none text-zinc-300 leading-relaxed text-justify"
                 dangerouslySetInnerHTML={{ __html: selectedVehicle.description }}
               />
