@@ -608,13 +608,13 @@ const Index = () => {
           />
         </div>
 
-        {/* Content container: stack on mobile, vertical-center on desktop */}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 md:min-h-[70vh] md:flex md:items-center">
+        {/* Content container: full-width (no max-w constraint) so columns can reach viewport edges */}
+        <div className="relative z-10 w-full md:min-h-[70vh] md:flex md:items-center">
           <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-8 lg:gap-x-12 mt-6 md:mt-0 items-center">
-            {/* Left side: text */}
+            {/* Left side: text — padded to match other sections' max-w-7xl alignment */}
             <div
               ref={techContentRef}
-              className="md:col-span-5 md:col-start-1 lg:col-span-5 lg:col-start-1 will-change-transform transform-gpu"
+              className="px-6 sm:px-8 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] md:col-span-5 md:col-start-1 lg:col-span-5 lg:col-start-1 will-change-transform transform-gpu"
               style={{ opacity: 0, transform: "translateX(-56px)" }}
             >
               <div className="flex items-center gap-2 text-white">
@@ -652,8 +652,8 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Right side: carousel container (layered on top of background image, sized larger as requested) */}
-            <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-end relative z-20 lg:mt-0" style={{ marginRight: 'min(0px, calc(640px - 50vw))' }}>
+            {/* Right side: carousel container — pr padding controls distance from viewport edge */}
+            <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-end relative z-20 lg:mt-0 pr-4 md:pr-6 lg:pr-8">
               <div className="relative w-full max-w-[720px]">
                 {/* Heading */}
                 <div className="flex items-center gap-2 mb-4">
