@@ -574,7 +574,7 @@ const Index = () => {
             sizes="100vw"
             src="/collection%20image.webp"
             alt="Car Arena Ceylon collection background"
-            className="section-img-collection max-h-[75vh] pl-36 md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
+            className="section-img-collection max-h-[75vh] pl-0 md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
           />
           {/* Vignette gradients to match the reference */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80" />
