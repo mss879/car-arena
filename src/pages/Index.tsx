@@ -574,7 +574,7 @@ const Index = () => {
             sizes="100vw"
             src="/collection%20image.webp"
             alt="Car Arena Ceylon collection background"
-            className="section-img-collection max-h-[75vh] md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
+            className="section-img-collection max-h-[75vh] pl-36 md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
           />
           {/* Vignette gradients to match the reference */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80" />
@@ -586,17 +586,15 @@ const Index = () => {
                 "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 4%, rgba(0,0,0,0.75) 10%, rgba(0,0,0,0.45) 18%, rgba(0,0,0,0) 32%)",
             }}
           />
-          {/* Stronger left-side fade for better text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent" />
-          {/* Extra left-edge vignette to reinforce the fade on large screens */}
-          <div className="absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-black/95 via-black/80 to-transparent" />
-          {/* Smooth fade-to-black on the right edge to blend the image border */}
-          <div className="absolute inset-y-0 right-0 w-2/5 bg-gradient-to-l from-black via-black/80 to-transparent pointer-events-none" />
+          {/* Stronger right-side fade for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/60 to-black/95" />
+          {/* Extra right-edge vignette to reinforce the fade on large screens */}
+          <div className="absolute inset-y-0 right-0 w-2/5 bg-gradient-to-l from-black/95 via-black/80 to-transparent" />
           <div
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(80% 80% at 85% 50%, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.85) 100%)",
+                "radial-gradient(80% 80% at 15% 50%, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.85) 100%)",
             }}
           />
           {/* Circular fade to softly blend entire image perimeter into black */}
@@ -605,7 +603,7 @@ const Index = () => {
             style={{
               background:
                 // Stronger edge fade (higher opacities) without extending further into center
-                "radial-gradient(circle at 60% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 85%, rgba(0,0,0,0.97) 94%, #000 100%)",
+                "radial-gradient(circle at 55% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 85%, rgba(0,0,0,0.97) 94%, #000 100%)",
             }}
           />
         </div>
@@ -624,12 +622,12 @@ const Index = () => {
                 <span className="text-sm font-semibold tracking-wide">Collection</span>
               </div>
 
-              <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-tight">
+              <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
                 Explore our collection of
                 <br className="hidden sm:block" /> premium vehicles
               </h2>
 
-              <p className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-white/70 text-justify">
+              <p className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-white/80 text-justify drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
                 Whether you desire the precision of
                 Japanese engineering, the luxury of European design, or the robust performance of Australian
                 models, our curated inventory offers something for every discerning driver. Each vehicle is
@@ -638,10 +636,10 @@ const Index = () => {
 
               <div className="mt-7">
                 <Link
-                  to="/services"
+                  to="/vehicle-listings"
                   className="group inline-flex items-center rounded-full bg-white pl-4 pr-2 py-3 text-sm font-medium text-gray-900 shadow-lg shadow-black/20 ring-1 ring-white/70 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
-                  <span>Explore services</span>
+                  <span>View listings</span>
                   <span className="ml-3 grid size-8 place-items-center rounded-full bg-gray-900/10 transition-transform group-hover:translate-x-0.5">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -667,11 +665,11 @@ const Index = () => {
                 </div>
 
                 {loadingVehicles ? (
-                  <div className="flex justify-center items-center py-20 bg-zinc-950/40 border border-white/10 rounded-3xl w-full h-[400px]">
+                  <div className="flex justify-center items-center py-20 bg-zinc-950/40 border border-white/10 rounded-3xl w-full h-[280px]">
                     <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C2A661]" />
                   </div>
                 ) : featuredVehicles.length === 0 ? (
-                  <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-white/10 p-8 w-full h-[400px] flex items-center justify-center">
+                  <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-white/10 p-8 w-full h-[280px] flex items-center justify-center">
                     <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
                   </div>
                 ) : (
@@ -680,7 +678,7 @@ const Index = () => {
                     <div
                       onMouseEnter={() => setIsHovered(true)}
                       onMouseLeave={() => setIsHovered(false)}
-                      className="relative overflow-hidden rounded-3xl bg-zinc-950/50 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.25)] transition-all duration-500 w-full min-h-[400px] flex flex-col"
+                      className="relative overflow-hidden rounded-3xl bg-zinc-950/50 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.25)] transition-all duration-500 w-full min-h-[280px] flex flex-col"
                     >
                       <AnimatePresence initial={false} custom={slideDirection} mode="wait">
                         {(() => {
@@ -697,71 +695,49 @@ const Index = () => {
                               exit="exit"
                               className="w-full flex flex-col flex-1"
                             >
-                              {/* Image Part */}
-                              <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-900 group/img">
-                                <img
-                                  src={mainImage}
-                                  alt={`${car.year} ${car.make} ${car.model}`}
-                                  className="object-cover w-full h-full scale-100 group-hover/img:scale-105 transition-transform duration-700 ease-out"
-                                />
-                                {/* Gradient overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none" />
-                                
-                                {/* Badges on image */}
-                                <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-10">
-                                  {car.condition !== "Reconditioned" && (
-                                    <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
-                                      {car.condition}
+                              <Link to={`/vehicle-listings?id=${car.id}`} className="w-full flex flex-col flex-1 group/card focus:outline-none">
+                                {/* Image Part */}
+                                <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-900 group/img">
+                                  {/* Blurred background image to fill the container */}
+                                  <img
+                                    src={mainImage}
+                                    alt=""
+                                    className="absolute inset-0 object-cover w-full h-full blur-md opacity-30 scale-110"
+                                    aria-hidden="true"
+                                  />
+                                  {/* Main image centered and fully visible */}
+                                  <img
+                                    src={mainImage}
+                                    alt={`${car.year} ${car.make} ${car.model}`}
+                                    className="relative z-10 object-contain w-full h-full scale-100 group-hover/img:scale-105 transition-transform duration-700 ease-out mx-auto"
+                                  />
+                                  {/* Gradient overlay */}
+                                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none z-10" />
+                                  
+                                  {/* Badges on image */}
+                                  <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-20">
+                                    {car.condition !== "Reconditioned" && (
+                                      <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
+                                        {car.condition}
+                                      </Badge>
+                                    )}
+                                    <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
+                                      {car.status}
                                     </Badge>
-                                  )}
-                                  <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
-                                    {car.status}
-                                  </Badge>
+                                  </div>
                                 </div>
-                              </div>
 
-                              {/* Details Part */}
-                              <div className="p-4 flex-1 flex flex-col justify-between">
-                                <div>
+                                {/* Details Part */}
+                                <div className="p-4 flex-1 flex flex-col justify-center">
                                   <span className="text-zinc-400 text-[10px] font-semibold tracking-wider uppercase">{car.year} Model</span>
-                                  <h3 className="text-lg font-bold text-white mt-0.5 group-hover:text-[#E6D090] transition-colors line-clamp-1">
+                                  <h3 className="text-lg font-bold text-white mt-0.5 group-hover/card:text-[#E6D090] transition-colors line-clamp-1">
                                     {car.make} {car.model}
                                   </h3>
                                   <div className="text-lg font-bold text-[#E6D090] mt-0.5">
                                     {formatPrice(car.price)}
                                   </div>
-
-                                  {/* Mini specs list */}
-                                  <div className="grid grid-cols-2 gap-1.5 mt-3 pt-3 border-t border-white/5 text-xs text-zinc-400">
-                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
-                                      <Gauge className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                                      <span className="truncate font-medium">{car.mileage.toLocaleString()} km</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
-                                      <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                                      <span className="truncate font-medium">{car.transmission}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
-                                      <Fuel className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                                      <span className="truncate font-medium">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
-                                      <ShieldCheck className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
-                                      <span className="truncate font-medium">{car.condition}</span>
-                                    </div>
-                                  </div>
                                 </div>
-
-                                <div className="mt-4">
-                                  <Link
-                                    to={`/vehicle-listings?id=${car.id}`}
-                                    className="w-full bg-[#C2A661] text-black font-bold hover:bg-white hover:text-black transition-all duration-300 rounded-xl h-9.5 flex items-center justify-center gap-1 group/btn shadow-[0_4px_12px_rgba(194,166,97,0.2)] text-xs"
-                                  >
-                                    View Details
-                                    <ChevronRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                                  </Link>
-                                </div>
-                              </div>
+                              </Link>
                             </motion.div>
                           );
                         })()}
