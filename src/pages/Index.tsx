@@ -622,7 +622,7 @@ const Index = () => {
                 <span className="text-sm font-semibold tracking-wide">Collection</span>
               </div>
 
-              <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
+              <h2 className="mt-3 text-3xl sm:text-4xl md:text-2xl lg:text-[2.25rem] xl:text-[2.75rem] 2xl:text-[3.25rem] font-semibold tracking-tight text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
                 Explore our collection of
                 <br className="hidden sm:block" /> Premium Vehicles
               </h2>
