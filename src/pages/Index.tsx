@@ -312,9 +312,9 @@ const Index = () => {
       return;
     }
 
-    // Initial state (ensure starting off-screen to the right)
+    // Initial state (ensure starting off-screen to the left)
     el.style.opacity = "0";
-    el.style.transform = "translateX(56px)";
+    el.style.transform = "translateX(-56px)";
     el.style.transition = "transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease-out";
 
     const obs = new IntersectionObserver(
@@ -574,7 +574,7 @@ const Index = () => {
             sizes="100vw"
             src="/collection%20image.webp"
             alt="Car Arena Ceylon collection background"
-            className="section-img-collection max-h-[75vh] pl-36 md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
+            className="section-img-collection max-h-[75vh] md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
           />
           {/* Vignette gradients to match the reference */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80" />
@@ -586,15 +586,17 @@ const Index = () => {
                 "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 4%, rgba(0,0,0,0.75) 10%, rgba(0,0,0,0.45) 18%, rgba(0,0,0,0) 32%)",
             }}
           />
-          {/* Stronger right-side fade for better text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/60 to-black/95" />
-          {/* Extra right-edge vignette to reinforce the fade on large screens */}
-          <div className="absolute inset-y-0 right-0 w-2/5 bg-gradient-to-l from-black/95 via-black/80 to-transparent" />
+          {/* Stronger left-side fade for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent" />
+          {/* Extra left-edge vignette to reinforce the fade on large screens */}
+          <div className="absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-black/95 via-black/80 to-transparent" />
+          {/* Smooth fade-to-black on the right edge to blend the image border */}
+          <div className="absolute inset-y-0 right-0 w-2/5 bg-gradient-to-l from-black via-black/80 to-transparent pointer-events-none" />
           <div
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(80% 80% at 15% 50%, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.85) 100%)",
+                "radial-gradient(80% 80% at 85% 50%, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.85) 100%)",
             }}
           />
           {/* Circular fade to softly blend entire image perimeter into black */}
@@ -603,32 +605,19 @@ const Index = () => {
             style={{
               background:
                 // Stronger edge fade (higher opacities) without extending further into center
-                "radial-gradient(circle at 55% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 85%, rgba(0,0,0,0.97) 94%, #000 100%)",
+                "radial-gradient(circle at 60% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 85%, rgba(0,0,0,0.97) 94%, #000 100%)",
             }}
-          />
-        </div>
-
-        {/* Mobile-first inline image (shown only below md) */}
-        <div className="md:hidden px-6 sm:px-8">
-          <img
-            decoding="async"
-            loading="lazy"
-            width={2880}
-            height={1614}
-            sizes="100vw"
-            src="/collection%20image.webp"
-            alt="Car Arena Ceylon collection"
-            className="w-full h-auto max-h-[50vh] object-cover rounded-xl edge-fade-xy"
           />
         </div>
 
         {/* Content container: stack on mobile, vertical-center on desktop */}
         <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 md:min-h-[70vh] md:flex md:items-center">
-          <div className="w-full grid grid-cols-1 md:grid-cols-12 mt-6 md:mt-0">
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-8 lg:gap-x-12 mt-6 md:mt-0 items-center">
+            {/* Left side: text */}
             <div
               ref={techContentRef}
-              className="md:col-span-5 md:col-start-8 will-change-transform transform-gpu"
-              style={{ opacity: 0, transform: "translateX(56px)" }}
+              className="md:col-span-5 md:col-start-1 lg:col-span-5 lg:col-start-1 will-change-transform transform-gpu"
+              style={{ opacity: 0, transform: "translateX(-56px)" }}
             >
               <div className="flex items-center gap-2 text-white">
                 <span className="h-1.5 w-1.5 rounded-full bg-white" aria-hidden="true" />
@@ -665,6 +654,157 @@ const Index = () => {
                     </svg>
                   </span>
                 </Link>
+              </div>
+            </div>
+
+            {/* Right side: small carousel container (layered on top of background image, made smaller) */}
+            <div className="md:col-span-6 md:col-start-7 lg:col-span-4 lg:col-start-9 w-full flex items-center justify-center relative z-20 lg:mt-0">
+              <div className="relative w-full">
+                {/* Heading */}
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#C2A661]" aria-hidden="true" />
+                  <span className="text-xs font-semibold tracking-wider text-[#C2A661] uppercase font-sans">Available Listings</span>
+                </div>
+
+                {loadingVehicles ? (
+                  <div className="flex justify-center items-center py-20 bg-zinc-950/40 border border-white/10 rounded-3xl w-full h-[400px]">
+                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C2A661]" />
+                  </div>
+                ) : featuredVehicles.length === 0 ? (
+                  <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-white/10 p-8 w-full h-[400px] flex items-center justify-center">
+                    <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
+                  </div>
+                ) : (
+                  <div className="relative w-full">
+                    {/* Carousel container */}
+                    <div
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                      className="relative overflow-hidden rounded-3xl bg-zinc-950/50 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.25)] transition-all duration-500 w-full min-h-[400px] flex flex-col"
+                    >
+                      <AnimatePresence initial={false} custom={slideDirection} mode="wait">
+                        {(() => {
+                          const car = featuredVehicles[currentSlide];
+                          if (!car) return null;
+                          const mainImage = getVehicleImageUrl(car.images);
+                          return (
+                            <motion.div
+                              key={currentSlide}
+                              custom={slideDirection}
+                              variants={slideVariants}
+                              initial="enter"
+                              animate="center"
+                              exit="exit"
+                              className="w-full flex flex-col flex-1"
+                            >
+                              {/* Image Part */}
+                              <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-900 group/img">
+                                <img
+                                  src={mainImage}
+                                  alt={`${car.year} ${car.make} ${car.model}`}
+                                  className="object-cover w-full h-full scale-100 group-hover/img:scale-105 transition-transform duration-700 ease-out"
+                                />
+                                {/* Gradient overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none" />
+                                
+                                {/* Badges on image */}
+                                <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-10">
+                                  {car.condition !== "Reconditioned" && (
+                                    <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
+                                      {car.condition}
+                                    </Badge>
+                                  )}
+                                  <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
+                                    {car.status}
+                                  </Badge>
+                                </div>
+                              </div>
+
+                              {/* Details Part */}
+                              <div className="p-4 flex-1 flex flex-col justify-between">
+                                <div>
+                                  <span className="text-zinc-400 text-[10px] font-semibold tracking-wider uppercase">{car.year} Model</span>
+                                  <h3 className="text-lg font-bold text-white mt-0.5 group-hover:text-[#E6D090] transition-colors line-clamp-1">
+                                    {car.make} {car.model}
+                                  </h3>
+                                  <div className="text-lg font-bold text-[#E6D090] mt-0.5">
+                                    {formatPrice(car.price)}
+                                  </div>
+
+                                  {/* Mini specs list */}
+                                  <div className="grid grid-cols-2 gap-1.5 mt-3 pt-3 border-t border-white/5 text-xs text-zinc-400">
+                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
+                                      <Gauge className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                                      <span className="truncate font-medium">{car.mileage.toLocaleString()} km</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
+                                      <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                                      <span className="truncate font-medium">{car.transmission}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
+                                      <Fuel className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                                      <span className="truncate font-medium">{car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl py-1.5 px-2.5 font-sans">
+                                      <ShieldCheck className="h-3.5 w-3.5 text-[#C2A661] shrink-0" />
+                                      <span className="truncate font-medium">{car.condition}</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="mt-4">
+                                  <Link
+                                    to={`/vehicle-listings?id=${car.id}`}
+                                    className="w-full bg-[#C2A661] text-black font-bold hover:bg-white hover:text-black transition-all duration-300 rounded-xl h-9.5 flex items-center justify-center gap-1 group/btn shadow-[0_4px_12px_rgba(194,166,97,0.2)] text-xs"
+                                  >
+                                    View Details
+                                    <ChevronRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                                  </Link>
+                                </div>
+                              </div>
+                            </motion.div>
+                          );
+                        })()}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Side Navigation Arrows */}
+                    <button
+                      onClick={handlePrev}
+                      aria-label="Previous listing"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-[0.9] group focus:outline-none"
+                    >
+                      <ChevronLeft className="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-0.5" />
+                    </button>
+
+                    <button
+                      onClick={handleNext}
+                      aria-label="Next listing"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-[0.9] group focus:outline-none"
+                    >
+                      <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+
+                    {/* Pagination Dots */}
+                    <div className="flex justify-center items-center gap-1.5 mt-4 z-20 relative">
+                      {featuredVehicles.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setSlideDirection(index > currentSlide ? 1 : -1);
+                            setCurrentSlide(index);
+                          }}
+                          aria-label={`Go to slide ${index + 1}`}
+                          className={`h-2 rounded-full transition-all duration-500 focus:outline-none ${
+                            index === currentSlide
+                              ? "w-6 bg-[#C2A661] shadow-[0_0_8px_rgba(194,166,97,0.6)]"
+                              : "w-2 bg-white/20 hover:bg-white/40"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -921,207 +1061,6 @@ const Index = () => {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Available Listings Section */}
-      <section aria-label="Available Listings" className="relative bg-black py-28 md:py-36 border-t border-white/5" style={{ contentVisibility: "auto" }}>
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
-            <div>
-              <div className="flex items-center gap-2 text-white">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#C2A661]" aria-hidden="true" />
-                <span className="text-sm font-semibold tracking-wide text-[#C2A661] uppercase">Showcase</span>
-              </div>
-              <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white font-serif">
-                Available Listings
-              </h2>
-              <p className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-white/70">
-                Explore our select inventory of exceptional vehicles. Each listing is verified, fully inspected, and ready to meet the highest standards of performance and comfort.
-              </p>
-            </div>
-            <div className="mt-6 md:mt-0">
-              <Link
-                to="/vehicle-listings"
-                className="group inline-flex items-center rounded-full bg-white pl-5 pr-2.5 py-3.5 text-sm font-medium text-gray-900 shadow-lg shadow-black/20 ring-1 ring-white/70 hover:bg-zinc-100 transition-all focus:outline-none"
-              >
-                <span>View All Listings</span>
-                <span className="ml-3 grid size-8 place-items-center rounded-full bg-gray-900/10 transition-transform group-hover:translate-x-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-                    <path d="M12.97 4.47a.75.75 0 0 1 1.06 0l6 6a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 1 1-1.06-1.06l4.72-4.72H4.75a.75.75 0 0 1 0-1.5h12.94l-4.72-4.72a.75.75 0 0 1 0-1.06Z" />
-                  </svg>
-                </span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Listings Carousel */}
-          {loadingVehicles ? (
-            <div className="flex justify-center py-20">
-              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C2A661]" />
-            </div>
-          ) : featuredVehicles.length === 0 ? (
-            <div className="text-center py-20 bg-zinc-950/40 rounded-2xl ring-1 ring-white/5 p-8">
-              <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
-            </div>
-          ) : (
-            <div className="relative w-full max-w-6xl mx-auto px-4 md:px-12">
-              {/* Carousel container */}
-              <div
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                className="relative overflow-hidden rounded-3xl bg-zinc-950/40 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.15)] transition-all duration-500 w-full lg:h-[500px] flex flex-col"
-              >
-                <AnimatePresence initial={false} custom={slideDirection} mode="wait">
-                  {(() => {
-                    const car = featuredVehicles[currentSlide];
-                    if (!car) return null;
-                    const mainImage = getVehicleImageUrl(car.images);
-                    return (
-                      <motion.div
-                        key={currentSlide}
-                        custom={slideDirection}
-                        variants={slideVariants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        className="w-full flex flex-col lg:grid lg:grid-cols-12 flex-1 h-auto lg:h-full"
-                      >
-                        {/* Image Column */}
-                        <div className="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto h-auto lg:h-full bg-zinc-900 overflow-hidden group/img">
-                          <img
-                            src={mainImage}
-                            alt={`${car.year} ${car.make} ${car.model}`}
-                            className="absolute inset-0 object-cover w-full h-full scale-100 group-hover/img:scale-105 transition-transform duration-700 ease-out"
-                          />
-                          {/* Dark overlays */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent lg:hidden pointer-events-none" />
-                          <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-zinc-950 hidden lg:block pointer-events-none" />
-                          
-                          {/* Badges on image */}
-                          <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
-                            {car.condition !== "Reconditioned" && (
-                              <Badge variant="outline" className={`uppercase tracking-wider text-[10px] px-2.5 py-1 font-bold border ${getConditionColor(car.condition)}`}>
-                                {car.condition}
-                              </Badge>
-                            )}
-                            <Badge variant="outline" className={`uppercase tracking-wider text-[10px] px-2.5 py-1 font-bold border ${getStatusColor(car.status)}`}>
-                              {car.status}
-                            </Badge>
-                          </div>
-                        </div>
-
-                        {/* Details Column */}
-                        <div className="lg:col-span-5 p-6 lg:p-8 flex flex-col justify-between bg-zinc-950/20 z-10 h-auto lg:h-full">
-                          <div>
-                            <span className="text-zinc-400 text-xs font-semibold tracking-wider uppercase">{car.year} Model</span>
-                            <h3 className="text-2xl lg:text-3xl font-extrabold text-white mt-1 leading-tight tracking-tight font-sans">
-                              {car.make} <span className="text-[#E6D090]">{car.model}</span>
-                            </h3>
-                            <div className="text-2xl lg:text-3xl font-black bg-gradient-to-r from-[#E6D090] via-white to-[#C2A661] bg-clip-text text-transparent mt-2 font-sans">
-                              {formatPrice(car.price)}
-                            </div>
-
-                            {/* Mini Specs */}
-                            <div className="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-white/10 text-xs text-zinc-400 font-sans">
-                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
-                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
-                                  <Gauge className="h-4 w-4 text-[#C2A661] shrink-0" />
-                                </div>
-                                <div className="min-w-0">
-                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Mileage</div>
-                                  <div className="text-zinc-200 font-bold text-sm mt-0.5 truncate">{car.mileage.toLocaleString()} km</div>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
-                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
-                                  <SlidersHorizontal className="h-4 w-4 text-[#C2A661] shrink-0" />
-                                </div>
-                                <div className="min-w-0">
-                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Transmission</div>
-                                  <div className="text-zinc-200 font-bold text-sm mt-0.5 truncate">{car.transmission}</div>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
-                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
-                                  <Fuel className="h-4 w-4 text-[#C2A661] shrink-0" />
-                                </div>
-                                <div className="min-w-0">
-                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Fuel & Engine</div>
-                                  <div className="text-zinc-200 font-bold text-xs mt-0.5 truncate" title={`${car.fuel_type} ${car.engine_capacity ? `(${car.engine_capacity})` : ""}`}>
-                                    {car.fuel_type} {car.engine_capacity ? `(${car.engine_capacity})` : ""}
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-2xl p-3 hover:bg-white/[0.04] transition-all hover:border-white/10">
-                                <div className="p-2 rounded-xl bg-[#C2A661]/10 border border-[#C2A661]/20">
-                                  <ShieldCheck className="h-4 w-4 text-[#C2A661] shrink-0" />
-                                </div>
-                                <div className="min-w-0">
-                                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Condition</div>
-                                  <div className="text-zinc-200 font-bold text-sm mt-0.5 truncate">{car.condition}</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="mt-6 lg:mt-8">
-                            <Link
-                              to={`/vehicle-listings?id=${car.id}`}
-                              className="w-full bg-gradient-to-r from-[#C2A661] to-[#E6D090] text-black font-extrabold hover:brightness-110 active:scale-[0.98] transition-all duration-300 rounded-xl h-12 flex items-center justify-center gap-1.5 shadow-[0_4px_20px_rgba(194,166,97,0.3)] text-sm group/btn"
-                            >
-                              View Details
-                              <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                            </Link>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })()}
-                </AnimatePresence>
-              </div>
-
-              {/* Side Navigation Arrows */}
-              <button
-                onClick={handlePrev}
-                aria-label="Previous listing"
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 lg:-translate-x-2/3 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-12 h-12 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-95 group focus:outline-none"
-              >
-                <ChevronLeft className="h-6 w-6 transition-transform duration-300 group-hover:-translate-x-0.5" />
-              </button>
-
-              <button
-                onClick={handleNext}
-                aria-label="Next listing"
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 lg:translate-x-2/3 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-12 h-12 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-95 group focus:outline-none"
-              >
-                <ChevronRight className="h-6 w-6 transition-transform duration-300 group-hover:translate-x-0.5" />
-              </button>
-
-              {/* Pagination Dots */}
-              <div className="flex justify-center items-center gap-2 mt-8 z-20 relative">
-                {featuredVehicles.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setSlideDirection(index > currentSlide ? 1 : -1);
-                      setCurrentSlide(index);
-                    }}
-                    aria-label={`Go to slide ${index + 1}`}
-                    className={`h-2.5 rounded-full transition-all duration-500 focus:outline-none ${
-                      index === currentSlide
-                        ? "w-8 bg-[#C2A661] shadow-[0_0_8px_rgba(194,166,97,0.6)]"
-                        : "w-2.5 bg-white/20 hover:bg-white/40"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </section>
 
