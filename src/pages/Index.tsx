@@ -656,7 +656,7 @@ const Index = () => {
             </div>
 
             {/* Right side: carousel container — pr padding controls distance from viewport edge */}
-            <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-end relative z-20 lg:mt-0 pr-2 md:pr-2 lg:pr-2 md:-mt-12 lg:-mt-20">
+            <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-center md:justify-end relative z-20 lg:mt-0 px-6 md:px-0 md:pr-2 md:-mt-12 lg:-mt-20">
               <div className="relative w-full max-w-[440px]">
                 {/* Heading */}
                 <div className="flex items-center gap-2 mb-4">
