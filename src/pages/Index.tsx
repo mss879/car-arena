@@ -624,14 +624,11 @@ const Index = () => {
 
               <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
                 Explore our collection of
-                <br className="hidden sm:block" /> premium vehicles
+                <br className="hidden sm:block" /> Premium Vehicles
               </h2>
 
               <p className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-white/80 text-justify drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-                Whether you desire the precision of
-                Japanese engineering, the luxury of European design, or the robust performance of Australian
-                models, our curated inventory offers something for every discerning driver. Each vehicle is
-                rigorously inspected to guarantee quality and reliability.
+                Whether you desire the precision of Japanese engineering or the luxury of European design, our curated inventory offers something for every driver. Each vehicle is carefully inspected to guarantee quality and reliability.
               </p>
 
               <div className="mt-7">
