@@ -36,12 +36,12 @@ const Navbar = () => {
   return (
     <header
     className={`z-50 w-full bg-transparent ${isHome ? "fixed" : "sticky"} pl-safe pr-safe`}
-    style={{ top: "calc(env(safe-area-inset-top, 0px) + 1.5rem)" }}
+    style={{ top: "calc(env(safe-area-inset-top, 0px) + 0.75rem)" }}
     >
-  <nav className="w-full px-4 md:px-6 lg:px-8 flex h-28 items-center justify-between">
+  <nav className="w-full px-4 md:px-6 lg:px-8 flex h-20 md:h-24 items-center justify-between">
         <Link to="/" aria-label="Home" className="flex items-center gap-2">
           {/* Fixed-size wrapper keeps layout width; inner img scaled for larger visual size */}
-          <span className="relative block h-24 w-24 md:h-28 md:w-28 overflow-visible">
+          <span className="relative block h-20 w-20 md:h-24 md:w-24 overflow-visible">
             <img
               src="/car arena logo.webp"
               alt="Brand logo"

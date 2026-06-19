@@ -562,228 +562,170 @@ const Index = () => {
 
 
 
-      {/* Technology / Collection section: mobile shows image then text; desktop keeps background overlay with right-aligned text */}
-      <section aria-label="Technology" className="relative bg-black overflow-hidden pt-12 sm:pt-16 md:pt-64" style={{ contentVisibility: "auto" }}>
-        {/* Background image container adjusted to reduce zoom (use object-contain) */}
-        <div className="hidden md:flex absolute inset-0 z-0 items-center justify-center overflow-hidden">
-          <img
-            decoding="async"
-            loading="lazy"
-            width={2880}
-            height={1614}
-            sizes="100vw"
-            src="/collection%20image.webp"
-            alt="Car Arena Ceylon collection background"
-            className="section-img-collection max-h-[75vh] pl-0 md:max-h-[85vh] lg:max-h-[90vh] w-auto object-contain transform-gpu"
-          />
-          {/* Vignette gradients to match the reference */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80" />
-          {/* Additional top fade to fully blend top edge */}
-          <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-full"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 4%, rgba(0,0,0,0.75) 10%, rgba(0,0,0,0.45) 18%, rgba(0,0,0,0) 32%)",
-            }}
-          />
-          {/* Stronger right-side fade for better text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/60 to-black/95" />
-          {/* Extra right-edge vignette to reinforce the fade on large screens */}
-          <div className="absolute inset-y-0 right-0 w-2/5 bg-gradient-to-l from-black/95 via-black/80 to-transparent" />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(80% 80% at 15% 50%, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.85) 100%)",
-            }}
-          />
-          {/* Circular fade to softly blend entire image perimeter into black */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                // Stronger edge fade (higher opacities) without extending further into center
-                "radial-gradient(circle at 55% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 85%, rgba(0,0,0,0.97) 94%, #000 100%)",
-            }}
-          />
-        </div>
-
-        {/* Content container: full-width (no max-w constraint) so columns can reach viewport edges */}
-        <div className="relative z-10 w-full md:min-h-[70vh] md:flex md:items-center">
-          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-8 lg:gap-x-12 mt-6 md:mt-0 items-center">
-            {/* Left side: text — padded to match other sections' max-w-7xl alignment */}
-            <div
-              ref={techContentRef}
-              className="px-6 sm:px-8 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] md:col-span-5 md:col-start-1 lg:col-span-5 lg:col-start-1 will-change-transform transform-gpu"
-              style={{ opacity: 0, transform: "translateX(-56px)" }}
-            >
-              <div className="flex items-center gap-2 text-white">
-                <span className="h-1.5 w-1.5 rounded-full bg-white" aria-hidden="true" />
-                <span className="text-sm font-semibold tracking-wide">Collection</span>
-              </div>
-
-              <h2
-                className="mt-3 text-3xl sm:text-4xl md:text-2xl lg:text-[1.85rem] xl:text-[2.35rem] 2xl:text-[2.75rem] font-semibold tracking-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]"
-                style={{ lineHeight: 1.2 }}
-              >
-                Explore our collection of
-                <br className="hidden sm:block" /> Premium Vehicles
-              </h2>
-
-              <p className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-white/80 text-justify drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-                Whether you desire the precision of Japanese engineering or the luxury of European design, our curated inventory offers something for every driver. Each vehicle is carefully inspected to guarantee quality and reliability.
-              </p>
-
-              <div className="mt-7">
-                <Link
-                  to="/vehicle-listings"
-                  className="group inline-flex items-center rounded-full bg-white pl-4 pr-2 py-3 text-sm font-medium text-gray-900 shadow-lg shadow-black/20 ring-1 ring-white/70 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+      <section aria-label="Collection" className="relative bg-black text-white py-16 md:py-24" style={{ contentVisibility: "auto" }}>
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 px-6 sm:px-8">
+          
+          {/* Left Side: Sticky Background Image & Text */}
+          <div className="w-full lg:w-1/2 lg:sticky lg:top-28 lg:self-start lg:mt-12 flex flex-col justify-end overflow-hidden relative border border-white/10 bg-zinc-950/40 shadow-[0_0_50px_rgba(0,0,0,0.85)] min-h-[440px] lg:h-[600px] card-edge-fade">
+            {/* Background image */}
+            <img
+              decoding="async"
+              loading="lazy"
+              src="/collection%20image.webp"
+              alt="Car Arena Ceylon collection background"
+              className="absolute inset-0 w-full h-full object-cover select-none transform-gpu"
+              style={{
+                WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)",
+                maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)",
+              }}
+            />
+            {/* Dark gradient overlay for readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30 z-0 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80 z-0 pointer-events-none" />
+            
+            {/* Content overlay */}
+            <div className="relative z-10 pt-8 pb-4 pl-4 pr-8 md:pt-12 md:pb-6 md:pl-8 md:pr-12 lg:pt-16 lg:pb-8 lg:pl-10 lg:pr-16 flex flex-col justify-end h-full flex-1">
+              <div>
+                <h2
+                  className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight"
                 >
-                  <span>View listings</span>
-                  <span className="ml-3 grid size-8 place-items-center rounded-full bg-gray-900/10 transition-transform group-hover:translate-x-0.5">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="h-5 w-5"
-                      aria-hidden
-                    >
-                      <path d="M12.97 4.47a.75.75 0 0 1 1.06 0l6 6a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 1 1-1.06-1.06l4.72-4.72H4.75a.75.75 0 0 1 0-1.5h12.94l-4.72-4.72a.75.75 0 0 1 0-1.06Z" />
-                    </svg>
-                  </span>
-                </Link>
-              </div>
-            </div>
+                  Explore our collection of
+                  <br /> Premium Vehicles
+                </h2>
 
-            {/* Right side: carousel container — pr padding controls distance from viewport edge */}
-            <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-center md:justify-end relative z-20 lg:mt-0 px-6 md:px-0 md:pr-2 md:-mt-12 lg:-mt-20">
-              <div className="relative w-full max-w-[440px]">
-                {/* Heading */}
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#C2A661]" aria-hidden="true" />
-                  <span className="text-xs font-semibold tracking-wider text-[#C2A661] uppercase font-sans">Available Listings</span>
-                </div>
-
-                {loadingVehicles ? (
-                  <div className="flex justify-center items-center py-20 bg-zinc-950/40 border border-white/10 rounded-3xl w-full h-[360px]">
-                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C2A661]" />
-                  </div>
-                ) : featuredVehicles.length === 0 ? (
-                  <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-white/10 p-8 w-full h-[360px] flex items-center justify-center">
-                    <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
-                  </div>
-                ) : (
-                  <div className="relative w-full">
-                    {/* Carousel container */}
-                    <div
-                      onMouseEnter={() => setIsHovered(true)}
-                      onMouseLeave={() => setIsHovered(false)}
-                      className="relative overflow-hidden rounded-3xl bg-zinc-950/50 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.25)] transition-all duration-500 w-full min-h-[360px] flex flex-col"
-                    >
-                      <AnimatePresence initial={false} custom={slideDirection} mode="wait">
-                        {(() => {
-                          const car = featuredVehicles[currentSlide];
-                          if (!car) return null;
-                          const mainImage = getVehicleImageUrl(car.images);
-                          return (
-                            <motion.div
-                              key={currentSlide}
-                              custom={slideDirection}
-                              variants={slideVariants}
-                              initial="enter"
-                              animate="center"
-                              exit="exit"
-                              className="w-full flex flex-col flex-1"
-                            >
-                              <Link to={`/vehicle-listings?id=${car.id}`} className="w-full flex flex-col flex-1 group/card focus:outline-none">
-                                {/* Image Part */}
-                                <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-900 group/img">
-                                  {/* Blurred background image to fill the container */}
-                                  <img
-                                    src={mainImage}
-                                    alt=""
-                                    className="absolute inset-0 object-cover w-full h-full blur-md opacity-30 scale-110"
-                                    aria-hidden="true"
-                                  />
-                                  {/* Main image centered and fully visible */}
-                                  <img
-                                    src={mainImage}
-                                    alt={`${car.year} ${car.make} ${car.model}`}
-                                    className="relative z-10 object-contain w-full h-full scale-100 group-hover/img:scale-105 transition-transform duration-700 ease-out mx-auto"
-                                  />
-                                  {/* Gradient overlay */}
-                                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none z-10" />
-                                  
-                                  {/* Badges on image */}
-                                  <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-20">
-                                    {car.condition !== "Reconditioned" && (
-                                      <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getConditionColor(car.condition)}`}>
-                                        {car.condition}
-                                      </Badge>
-                                    )}
-                                    <Badge variant="outline" className={`uppercase tracking-wider text-[9px] px-2 py-0.5 font-bold border ${getStatusColor(car.status)}`}>
-                                      {car.status}
-                                    </Badge>
-                                  </div>
-                                </div>
-
-                                {/* Details Part */}
-                                <div className="p-5 flex-1 flex flex-col justify-center">
-                                  <span className="text-zinc-400 text-xs font-semibold tracking-wider uppercase">{car.year} Model</span>
-                                  <h3 className="text-xl font-bold text-white mt-1 group-hover/card:text-[#E6D090] transition-colors line-clamp-1">
-                                    {car.make} {car.model}
-                                  </h3>
-                                  <div className="text-xl font-bold text-[#E6D090] mt-1">
-                                    {formatPrice(car.price)}
-                                  </div>
-                                </div>
-                              </Link>
-                            </motion.div>
-                          );
-                        })()}
-                      </AnimatePresence>
-                    </div>
-
-                    {/* Side Navigation Arrows */}
-                    <button
-                      onClick={handlePrev}
-                      aria-label="Previous listing"
-                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-[0.9] group focus:outline-none"
-                    >
-                      <ChevronLeft className="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-0.5" />
-                    </button>
-
-                    <button
-                      onClick={handleNext}
-                      aria-label="Next listing"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/10 hover:border-[#C2A661] text-white hover:text-[#C2A661] transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20 cursor-pointer hover:scale-110 active:scale-[0.9] group focus:outline-none"
-                    >
-                      <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </button>
-
-                    {/* Pagination Dots */}
-                    <div className="flex justify-center items-center gap-1.5 mt-4 z-20 relative">
-                      {featuredVehicles.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            setSlideDirection(index > currentSlide ? 1 : -1);
-                            setCurrentSlide(index);
-                          }}
-                          aria-label={`Go to slide ${index + 1}`}
-                          className={`h-2 rounded-full transition-all duration-500 focus:outline-none ${
-                            index === currentSlide
-                              ? "w-6 bg-[#C2A661] shadow-[0_0_8px_rgba(194,166,97,0.6)]"
-                              : "w-2 bg-white/20 hover:bg-white/40"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <p className="mt-6 max-w-md text-base leading-relaxed text-white/80 text-justify">
+                  Whether you desire the precision of Japanese engineering or the luxury of European design, our curated inventory offers something for every driver. Each vehicle is carefully inspected to guarantee quality and reliability.
+                </p>
               </div>
             </div>
           </div>
+
+          {/* Right Side: Scrollable Listing Cards */}
+          <div className="w-full lg:w-1/2 flex flex-col gap-8 lg:mt-12">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C2A661]" aria-hidden="true" />
+                <span className="text-xs font-semibold tracking-wider text-[#C2A661] uppercase font-sans">Featured Vehicles</span>
+              </div>
+            </div>
+
+            {loadingVehicles ? (
+              // Loading Skeletons
+              Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="flex flex-col sm:flex-row gap-6 py-10 px-8 bg-zinc-950/20 border border-white/5 animate-pulse items-center">
+                  <div className="w-full sm:w-60 md:w-68 aspect-[16/10] bg-zinc-900/80 rounded flex-shrink-0" />
+                  <div className="flex-1 space-y-3 w-full">
+                    <div className="h-4 bg-zinc-900 w-1/4 rounded" />
+                    <div className="h-6 bg-zinc-900 w-2/3 rounded" />
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <div className="h-7 bg-zinc-900 rounded" />
+                      <div className="h-7 bg-zinc-900 rounded" />
+                      <div className="h-7 bg-zinc-900 rounded" />
+                      <div className="h-7 bg-zinc-900 rounded" />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : featuredVehicles.length === 0 ? (
+              <div className="text-center py-20 bg-zinc-950/40 border border-white/10 p-8 w-full flex items-center justify-center min-h-[300px]">
+                <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-6">
+                {featuredVehicles.slice(0, 3).map((car, index) => {
+                  const mainImage = getVehicleImageUrl(car.images);
+                  return (
+                    <Link
+                      key={car.id}
+                      to={`/vehicle-listings?id=${car.id}`}
+                      className="group flex flex-col sm:flex-row gap-6 py-10 px-8 bg-zinc-950/40 hover:bg-zinc-900/60 border border-white/5 hover:border-[#C2A661]/40 transition-all duration-300 items-stretch justify-between"
+                    >
+                      {/* Left Part: Vehicle Image Thumbnail */}
+                      <div className="relative w-full sm:w-60 md:w-68 aspect-[16/10] overflow-hidden bg-zinc-900 flex-shrink-0 border border-white/10 rounded">
+                        {/* Blurred background image */}
+                        <img
+                          src={mainImage}
+                          alt=""
+                          className="absolute inset-0 object-cover w-full h-full blur-sm opacity-30 scale-110"
+                          aria-hidden="true"
+                        />
+                        {/* Main image centered and fully visible */}
+                        <img
+                          src={mainImage}
+                          alt={`${car.year} ${car.make} ${car.model}`}
+                          className="relative z-10 object-contain w-full h-full scale-100 group-hover:scale-105 transition-transform duration-700 ease-out mx-auto"
+                        />
+                      </div>
+
+                      {/* Middle Part: Info */}
+                      <div className="flex-1 min-w-0 w-full flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+                            <span>{car.year} Model</span>
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getStatusColor(car.status)} bg-black/40`}>
+                              {car.status}
+                            </span>
+                          </div>
+                          
+                          <h3 className="text-xl sm:text-2xl font-bold text-white mt-1 group-hover:text-[#E6D090] transition-colors">
+                            {car.make} {car.model}
+                          </h3>
+                          
+                          {/* Details Grid */}
+                          <div className="grid grid-cols-2 gap-2 mt-3 text-xs font-mono text-zinc-300">
+                            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded px-2.5 py-1.5">
+                              <SlidersHorizontal className="h-3.5 w-3.5 text-[#C2A661] flex-shrink-0" />
+                              <span className="truncate">{car.transmission}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded px-2.5 py-1.5">
+                              <Fuel className="h-3.5 w-3.5 text-[#C2A661] flex-shrink-0" />
+                              <span className="truncate">{car.fuel_type}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded px-2.5 py-1.5">
+                              <Gauge className="h-3.5 w-3.5 text-[#C2A661] flex-shrink-0" />
+                              <span className="truncate">
+                                {car.mileage > 0 ? `${car.mileage.toLocaleString()} km` : "Brand New"}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded px-2.5 py-1.5">
+                              <ShieldCheck className="h-3.5 w-3.5 text-[#C2A661] flex-shrink-0" />
+                              <span className="truncate">{car.condition}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="text-xl sm:text-2xl font-bold text-[#E6D090] mt-4">
+                          {formatPrice(car.price)}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+                
+                {/* View Collection Button at the end of the 3 cards */}
+                <div className="mt-4 flex justify-center lg:justify-start">
+                  <Link
+                    to="/vehicle-listings"
+                    className="group inline-flex items-center rounded-full bg-white pl-4 pr-2 py-3 text-sm font-medium text-gray-900 shadow-lg shadow-black/20 ring-1 ring-white/70 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                  >
+                    <span>View Collection</span>
+                    <span className="ml-3 grid size-8 place-items-center rounded-full bg-gray-900/10 transition-transform group-hover:translate-x-0.5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="h-5 w-5"
+                        aria-hidden
+                      >
+                        <path d="M12.97 4.47a.75.75 0 0 1 1.06 0l6 6a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 1 1-1.06-1.06l4.72-4.72H4.75a.75.75 0 0 1 0-1.5h12.94l-4.72-4.72a.75.75 0 0 1 0-1.06Z" />
+                      </svg>
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+          
         </div>
       </section>
 
