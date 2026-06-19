@@ -653,7 +653,7 @@ const Index = () => {
             </div>
 
             {/* Right side: carousel container (layered on top of background image, sized larger as requested) */}
-            <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-end relative z-20 lg:mt-0 md:-mr-16 lg:-mr-24 xl:-mr-[calc((100vw-1280px)/2+16px)]">
+            <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-end relative z-20 lg:mt-0 xl:mr-[calc(640px-50vw)]">
               <div className="relative w-full max-w-[720px]">
                 {/* Heading */}
                 <div className="flex items-center gap-2 mb-4">
