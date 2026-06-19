@@ -614,7 +614,7 @@ const Index = () => {
             {/* Left side: text — padded to match other sections' max-w-7xl alignment */}
             <div
               ref={techContentRef}
-              className="px-6 sm:px-8 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] md:col-span-5 md:col-start-1 lg:col-span-5 lg:col-start-1 will-change-transform transform-gpu"
+              className="px-6 sm:px-8 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] md:col-span-5 md:col-start-1 lg:col-span-6 lg:col-start-1 will-change-transform transform-gpu"
               style={{ opacity: 0, transform: "translateX(-56px)" }}
             >
               <div className="flex items-center gap-2 text-white">
@@ -622,7 +622,10 @@ const Index = () => {
                 <span className="text-sm font-semibold tracking-wide">Collection</span>
               </div>
 
-              <h2 className="mt-3 text-3xl sm:text-4xl md:text-2xl lg:text-[2.25rem] xl:text-[2.75rem] 2xl:text-[3.25rem] font-semibold tracking-tight text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
+              <h2
+                className="mt-3 text-3xl sm:text-4xl md:text-2xl lg:text-[2.25rem] xl:text-[2.75rem] 2xl:text-[3.25rem] font-semibold tracking-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]"
+                style={{ lineHeight: 1.2 }}
+              >
                 Explore our collection of
                 <br className="hidden sm:block" /> Premium Vehicles
               </h2>
@@ -654,7 +657,7 @@ const Index = () => {
 
             {/* Right side: carousel container — pr padding controls distance from viewport edge */}
             <div className="md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7 w-full flex items-center justify-end relative z-20 lg:mt-0 pr-4 md:pr-6 lg:pr-8">
-              <div className="relative w-full max-w-[720px]">
+              <div className="relative w-full max-w-[580px]">
                 {/* Heading */}
                 <div className="flex items-center gap-2 mb-4">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#C2A661]" aria-hidden="true" />
@@ -662,11 +665,11 @@ const Index = () => {
                 </div>
 
                 {loadingVehicles ? (
-                  <div className="flex justify-center items-center py-20 bg-zinc-950/40 border border-white/10 rounded-3xl w-full h-[460px]">
+                  <div className="flex justify-center items-center py-20 bg-zinc-950/40 border border-white/10 rounded-3xl w-full h-[420px]">
                     <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C2A661]" />
                   </div>
                 ) : featuredVehicles.length === 0 ? (
-                  <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-white/10 p-8 w-full h-[460px] flex items-center justify-center">
+                  <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-white/10 p-8 w-full h-[420px] flex items-center justify-center">
                     <p className="text-zinc-400">No vehicles available at the moment. Please check back later.</p>
                   </div>
                 ) : (
@@ -675,7 +678,7 @@ const Index = () => {
                     <div
                       onMouseEnter={() => setIsHovered(true)}
                       onMouseLeave={() => setIsHovered(false)}
-                      className="relative overflow-hidden rounded-3xl bg-zinc-950/50 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.25)] transition-all duration-500 w-full min-h-[460px] flex flex-col"
+                      className="relative overflow-hidden rounded-3xl bg-zinc-950/50 backdrop-blur-md border border-white/10 hover:border-[#C2A661]/40 shadow-[0_20px_50px_-15px_rgba(194,166,97,0.25)] transition-all duration-500 w-full min-h-[420px] flex flex-col"
                     >
                       <AnimatePresence initial={false} custom={slideDirection} mode="wait">
                         {(() => {
@@ -725,7 +728,7 @@ const Index = () => {
                                 </div>
 
                                 {/* Details Part */}
-                                <div className="p-6 flex-1 flex flex-col justify-center">
+                                <div className="p-5 flex-1 flex flex-col justify-center">
                                   <span className="text-zinc-400 text-xs font-semibold tracking-wider uppercase">{car.year} Model</span>
                                   <h3 className="text-xl font-bold text-white mt-1 group-hover/card:text-[#E6D090] transition-colors line-clamp-1">
                                     {car.make} {car.model}
